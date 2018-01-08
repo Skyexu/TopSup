@@ -15,11 +15,11 @@ from PIL import Image
 import os
 
 def pull_screenshot():
-    os.system('adb shell screencap -p /sdcard/autojump.png')
-    os.system('adb pull /sdcard/autojump.png .')
+    os.system('adb shell screencap -p /sdcard/screenshot.png')
+    os.system('adb pull /sdcard/screenshot.png .')
 
 pull_screenshot()
-img = Image.open("./autojump.png")
+img = Image.open("./screenshot.png")
 
 # 用 matplot 查看测试分辨率，切割
 
@@ -44,8 +44,6 @@ headers = {
 res = requests.get(url=host,headers=headers).json()
 token = res['access_token']
 
-keyword = input("输入 Y 继续执行, 任意键取消执行" )
-
 
 imgByteArr = io.BytesIO()
 region.save(imgByteArr, format='PNG')
@@ -58,4 +56,3 @@ for i in r.json()['words_result']:
     result += i['words']
 result = urllib.parse.quote(result)
 webbrowser.open('https://baidu.com/s?wd='+result)
-keyword = input("输入 Y 继续执行，N 取消执行: ")
