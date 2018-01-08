@@ -1,6 +1,6 @@
 
 # 答题辅助
-这两天冲顶大会直播答题 APP 突然火了起来，简单写了一个辅助答题脚本。使用文字识别搜索，只能增加准确率，保证不了全对。
+这两天冲顶大会直播答题 APP 突然火了起来，写了一个简单的辅助答题脚本，就几行代码。使用文字识别搜索，只能增加准确率，保证不了全对。
 
 ![](./resources/screenshot.PNG)
 
@@ -36,7 +36,7 @@ adb pull /sdcard/screenshot.png .
 #### 4. 安装 谷歌 Tesseract
 
 Windows下链接：
-*推荐使用安装版在安装时选择增加中文简体语言包*
+*推荐使用安装版，在安装时选择增加中文简体语言包*
 - 安装版：
 https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-setup-3.05.01.exe
 - 免安装版：
@@ -53,11 +53,12 @@ pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\
 # 语言包目录
 tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\tessdata"'
 ```
-7. 运行脚本
+#### 6. 运行脚本
 `python GetTitleTessAndroid.py`
 会自动识别文字并打开浏览器
 
 **注： 可以用 `GetImgTool.py` 调整题目截取位置**
+
 若屏幕分辨率不同，请在 GetTitleTessAndroid.py 中自行修改代码即可
 ```
 # 切割题目位置，左上角坐标和右下角坐标
@@ -66,14 +67,16 @@ region = img.crop((50, 350, 1000, 560)) # 坚果 pro1
 ```
 
 ### IOS
-**未测试**
-需要安装 WDA 进行截图，参考 https://testerhome.com/topics/7220 ,其他步骤相同。
 
-`python GetTitleTessIos.py`
+**未测试**
+
+- 需要安装 WDA 进行截图，参考 https://testerhome.com/topics/7220 ,其他步骤相同。
+
+- `python GetTitleTessIos.py`
 
 ## 其他文件说明
 
-GetTitleBaiduAndroid.py 和 GetTitleBaiduIos.py 为 [livc](https://livc.io/blog/204) 文章代码修改来的，需要在[百度平台](https://cloud.baidu.com/product/ocr)上申请 API Key 和 Secret Key 即可使用，无需下载其他文字识别包，以上代码安卓版本都测试过了。
+`GetTitleBaiduAndroid.py` 和 `GetTitleBaiduIos.py` 为 [livc](https://livc.io/blog/204) 文章代码修改来的，无需下载其他文字识别包，缺点是需要在[百度平台](https://cloud.baidu.com/product/ocr)上申请 API Key 和 Secret Key ，并且每天调用次数有限，安卓版本已测试。
 
 
 ## 总结
