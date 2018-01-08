@@ -6,6 +6,7 @@
 
 灵感来自：
 > [微信跳一跳辅助 ](https://github.com/wangshub/wechat_jump_game)
+> 
 > [程序员如何玩转《冲顶大会》？](https://livc.io/blog/204)
 
 ## 具体做法
@@ -24,7 +25,7 @@ adb pull /sdcard/screenshot.png .
 ### Android
 1. 安装 ADB
 下载地址：https://adb.clockworkmod.com/
-安装完后插入安卓设备且安卓已打开 USB 调试模式，终端输入 `adb devices` ，显示设备号则表示成功。我手上的机子是坚果 pro1，第一次不成功，使用 [handshaker](https://www.smartisan.com/apps/handshaker) 加载驱动后成功，也可以使用豌豆荚之类的试试。
+安装完后插入安卓设备且安卓已打开 USB 调试模式，终端输入 `adb devices` ，显示设备号则表示成功。我手上的机子是坚果 pro1，第一次不成功,查看设备管理器有叹号，使用 [handshaker](https://www.smartisan.com/apps/handshaker) 加载驱动后成功，也可以使用豌豆荚之类的试试。
 2. 安装 python 3
 3. 安装 pytesseract
 命令行：`pip install pytesseract`
@@ -58,7 +59,8 @@ region = img.crop((50, 350, 1000, 560)) # 坚果 pro1
 ```
 
 ### IOS
-需要安装 WDA 进行截图，参考 https://testerhome.com/topics/7220,其他步骤相同。
+**未测试**
+需要安装 WDA 进行截图，参考 https://testerhome.com/topics/7220 ,其他步骤相同。
 
 `python GetTitleTessIos.py`
 
