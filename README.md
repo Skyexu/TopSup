@@ -1,6 +1,6 @@
 
 # 答题辅助
-这两天冲顶大会直播答题 APP 突然火了起来，写了一个简单的辅助答题脚本，就几行代码，可以用在各类答题游戏中。使用文字识别搜索，只能增加准确率，保证不了全对。
+这两天冲顶大会直播答题 APP 突然火了起来，萌生了使用截图，文字识别，搜索来做个小辅助的想法。使用文字识别搜索，只能增加准确率，保证不了全对。
 
 **目前版本增加了截图传输效率，修改了识别参数，对图像进行灰度转化，去干扰增加了识别准确率。结果判断使用了三种方式，对不同问题可以参考不同结果。**
 
@@ -26,6 +26,7 @@ adb shell screencap -p /sdcard/screenshot.png
 adb pull /sdcard/screenshot.png .
 ```
 2. OCR 识别题目与选项文字
+![](/resources/cut.png)
 两个方法：
 	- 谷歌 [Tesseract](https://github.com/madmaze/pytesseract) ，安装软件即可，接下来主要使用这个方法
 	- 百度 OCR [livc](https://livc.io/blog/204) ，需要注册百度 API，每天调用次数有限
