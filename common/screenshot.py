@@ -24,13 +24,13 @@ def pull_screenshot():
             shell=True, stdout=subprocess.PIPE)
         binary_screenshot = process.stdout.read()
         if SCREENSHOT_WAY == 2:
-            #binary_screenshot = binary_screenshot.replace(b'\r\n', b'\n')
-            binary_screenshot = binary_screenshot.split(b' ')
-            binary_screenshot = binary_screenshot[len(binary_screenshot) - 1]
-            print(binary_screenshot)
+            binary_screenshot = binary_screenshot.replace(b'\r\n', b'\n')
+            # binary_screenshot = binary_screenshot.split(b' ')
+            # binary_screenshot = binary_screenshot[len(binary_screenshot) - 1]
+            #print(binary_screenshot)
         elif SCREENSHOT_WAY == 1:
             binary_screenshot = binary_screenshot.replace(b'\r\r\n', b'\n')
-        f = open('autojump.png', 'wb')
+        f = open('screenshot.png', 'wb')
         f.write(binary_screenshot)
         f.close()
     elif SCREENSHOT_WAY == 0:

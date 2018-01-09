@@ -2,6 +2,8 @@
 # 答题辅助
 这两天冲顶大会直播答题 APP 突然火了起来，写了一个简单的辅助答题脚本，就几行代码，可以用在各类答题游戏中。使用文字识别搜索，只能增加准确率，保证不了全对。
 
+**目前版本增加了截图传输效率，修改了识别参数，对图像进行灰度转化，去干扰增加了识别准确率。结果判断使用了三种方式，对不同问题可以参考不同结果。**
+
 ![](/resources/screenshot.PNG)
 
 灵感来自：
@@ -9,11 +11,11 @@
 > 
 > [程序员如何玩转《冲顶大会》？](https://livc.io/blog/204)
 
-## 版本
+## 版本说明
 - 谷歌 Tesseract
 	- [简单访问浏览器版本](/simpleVersion)
-	- 在更新版本：本目录，获取题目与选项，用不同方法出结果
-- [百度 OCR 版本](/simpleVersion)：只实现了简单浏览器搜索
+	- 最新版本：本目录，截图识别题目与选项，用不同方法出结果
+- [百度 OCR 版本](/simpleVersion)：只实现了简单浏览器搜索，参考本目录代码可改
 
 
 ## 具体做法
@@ -25,13 +27,25 @@ adb pull /sdcard/screenshot.png .
 ```
 2. OCR 识别题目与选项文字
 两个方法：
-	- 谷歌 [Tesseract](https://github.com/madmaze/pytesseract) 
-	- 百度 OCR [livc](https://livc.io/blog/204) ，缺点是需要注册百度 API，每天调用次数有限
+	- 谷歌 [Tesseract](https://github.com/madmaze/pytesseract) ，安装软件即可，接下来主要使用这个方法
+	- 百度 OCR [livc](https://livc.io/blog/204) ，需要注册百度 API，每天调用次数有限
 
-3. 调用浏览器百度搜索
+3. 搜索判断
+
+## 结果判断方式
+
+1. 直接打开浏览器搜索问题
 ![](./resources/result.png)
+2. 题目+每个选项都通过浏览器搜索，从网页代码中提取搜索结果计数
+3. 只用题目搜索结果页面代码中包含选项的词频计数法
 
+以下为两个示例结果
 
+![](./resources/result2.png)
+
+![](./resources/result3.png)
+
+参考了 [I Hacked HQ Trivia But Here’s How They Can Stop Me](https://hackernoon.com/i-hacked-hq-trivia-but-heres-how-they-can-stop-me-68750ed16365)
  
 ## 使用步骤 (谷歌 [Tesseract](https://github.com/madmaze/pytesseract)) 
 ### Android
@@ -46,6 +60,7 @@ adb pull /sdcard/screenshot.png .
 ```
 pip install pytesseract
 pip install PIL
+pip install requests
 ```
 #### 4. 安装 谷歌 Tesseract
 
@@ -64,20 +79,21 @@ https://github.com/tesseract-ocr/tesseract/wiki
 ```
 # tesseract 路径
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'
-# 语言包目录
-tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\tessdata"'
+# 语言包目录和参数
+tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\tessdata" --psm 6'
 ```
 #### 6. 运行脚本
-`python GetTitleTessAndroid.py`
+`python GetQuestionTessAndroid.py`
 会自动识别文字并打开浏览器
 
 **注： 可以用 `GetImgTool.py` 调整题目截取位置**
 
-若屏幕分辨率不同，请在 GetTitleTessAndroid.py 中自行修改代码即可
+若屏幕分辨率不同，请在 ocr.py 中自行修改代码即可
 ```
-# 切割题目位置，左上角坐标和右下角坐标
-region = img.crop((50, 350, 1000, 560)) # 坚果 pro1
-#region = img.crop((75, 315, 1167, 789)) # iPhone 7P
+# 切割题目和选项位置，左上角坐标和右下角坐标,自行测试分辨率
+question_im = image.crop((50, 350, 1000, 560)) # 坚果 pro1
+choices_im = image.crop((75, 535, 990, 1150))
+# question = img.crop((75, 315, 1167, 789)) # iPhone 7P
 ```
 
 ### IOS
@@ -86,30 +102,15 @@ region = img.crop((50, 350, 1000, 560)) # 坚果 pro1
 
 - 需要安装 WDA 进行截图，参考 https://testerhome.com/topics/7220 ,其他步骤相同。
 
-- `python GetTitleTessIos.py`
+- `python GetQuestionTessIos.py`
 
 ## 使用步骤 (百度 OCR)
 
-1. 安装 ADB
-2. 安装 python 3
-3. 安装所需 python 包
-```
-urllib
-requests
-base64
-```
-4. 在[百度平台](https://cloud.baidu.com/product/ocr)上创建应用申请 API Key 和 Secret Key
-5. 在 `GetTitleBaiduAndroid.py` 中加入相应 key
-```
-# 百度OCR API
-api_key = ''
-api_secret = ''
-```
-6. 运行脚本 `python GetTitleBaiduAndroid.py`
-
+请移步，[链接](/baiduApiVersion)
 
 ## 其它
-Tesseract 参数
+Tesseract 参数，若识别有问题可以更改参数解决
+
 https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc
 ## 总结
 
@@ -117,5 +118,4 @@ https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc
 
 ## Next
 
-- 选项也识别，问题加选项一起搜索
 - 文字识别后 nlp 处理一下关系，然后搜索不同选择结果

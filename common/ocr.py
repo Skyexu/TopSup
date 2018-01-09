@@ -41,9 +41,10 @@ def depoint(img):   #input: gray image
 
 def ocr_img(image):
 
-    # 切割题目位置，左上角坐标和右下角坐标
+    # 切割题目和选项位置，左上角坐标和右下角坐标,自行测试分辨率
     question_im = image.crop((50, 350, 1000, 560)) # 坚果 pro1
     choices_im = image.crop((75, 535, 990, 1150))
+    # question = img.crop((75, 315, 1167, 789)) # iPhone 7P
 
     # 转化为灰度图
     question_im = question_im.convert('L')
@@ -56,7 +57,7 @@ def ocr_img(image):
 
     # tesseract 路径
     pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'
-    # 语言包目录
+    # 语言包目录和参数
     tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\tessdata" --psm 6'
 
     # lang 指定中文简体
