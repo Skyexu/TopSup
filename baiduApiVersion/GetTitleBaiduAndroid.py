@@ -30,7 +30,7 @@ region = img.crop((50, 350, 1000, 560)) # 坚果 pro1
 #im2 = plt.imshow(region, animated=True)
 #plt.show()
 
-# 百度OCR API
+# 百度OCR API  ，在 https://cloud.baidu.com/product/ocr 上注册新建应用即可
 api_key = ''
 api_secret = ''
 

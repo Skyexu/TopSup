@@ -19,16 +19,7 @@ def pull_screenshot():
     # 删除原有截图
     os.system("adb shell rm /sdcard/screenshot.png")
 
-# 不成功待测试
-def pull_screenshot2():
-    process = subprocess.Popen('adb shell screencap -p ', shell=True, stdout=subprocess.PIPE)
-    binary_screenshot = process.stdout.read()
-    #binary_screenshot = binary_screenshot.replace(b'\r\r\n', b'\n')
-    #img = np.array(binary_screenshot)
-    print(binary_screenshot)
-    f = open('screenshot.png', 'wb')
-    f.write(binary_screenshot)
-    f.close()
+
 
 # 截图已存在则删除，增加容错
 if os.path.isfile('screenshot.png'):
@@ -40,7 +31,7 @@ if os.path.isfile('screenshot.png'):
 pull_screenshot()
 img = Image.open("./screenshot.png")
 
-# 切割题目位置，左上角坐标和右下角坐标
+# 切割题目位置，左上角坐标和右下角坐标,自行测试分辨率
 question = img.crop((50, 350, 1000, 560)) # 坚果 pro1
 choices = img.crop((75, 535, 990, 1150))
 
@@ -55,16 +46,7 @@ tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\t
 text = pytesseract.image_to_string(question, lang='chi_sim', config=tessdata_dir_config)
 text = text.replace("\n", "")[2:]
 
-#text2 = pytesseract.image_to_string(choices, lang='chi_sim', config=tessdata_dir_config)
-#text2 = text2.replace("\n", "")
 
 print(text)
 #print(text2)
 webbrowser.open('https://baidu.com/s?wd='+text)
-
-image = Image.open("./screenshot.png")
-question,choices = ocr_img(image)
-
-print("识别结果:")
-print(question)
-print(choices)

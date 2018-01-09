@@ -2,12 +2,19 @@
 # 答题辅助
 这两天冲顶大会直播答题 APP 突然火了起来，写了一个简单的辅助答题脚本，就几行代码，可以用在各类答题游戏中。使用文字识别搜索，只能增加准确率，保证不了全对。
 
-![](./resources/screenshot.PNG)
+![](/resources/screenshot.PNG)
 
 灵感来自：
 > [微信跳一跳辅助 ](https://github.com/wangshub/wechat_jump_game)
 > 
 > [程序员如何玩转《冲顶大会》？](https://livc.io/blog/204)
+
+## 版本
+- 谷歌 Tesseract
+	- [简单访问浏览器版本](/simpleVersion)
+	- 在更新版本：本目录，获取题目与选项，用不同方法出结果
+- [百度 OCR 版本](/simpleVersion)：只实现了简单浏览器搜索
+
 
 ## 具体做法
 
@@ -16,14 +23,16 @@
 adb shell screencap -p /sdcard/screenshot.png
 adb pull /sdcard/screenshot.png .
 ```
-2. OCR 识别题目文字
+2. OCR 识别题目与选项文字
 两个方法：
 	- 谷歌 [Tesseract](https://github.com/madmaze/pytesseract) 
-	- 百度 ORC [livc](https://livc.io/blog/204) ，缺点是需要注册百度 API，每天调用次数有限
+	- 百度 OCR [livc](https://livc.io/blog/204) ，缺点是需要注册百度 API，每天调用次数有限
 
 3. 调用浏览器百度搜索
 ![](./resources/result.png)
 
+
+ 
 ## 使用步骤 (谷歌 [Tesseract](https://github.com/madmaze/pytesseract)) 
 ### Android
 #### 1. 安装 ADB
@@ -79,7 +88,7 @@ region = img.crop((50, 350, 1000, 560)) # 坚果 pro1
 
 - `python GetTitleTessIos.py`
 
-## 使用步骤 (百度 ORC)
+## 使用步骤 (百度 OCR)
 
 1. 安装 ADB
 2. 安装 python 3
@@ -99,7 +108,9 @@ api_secret = ''
 6. 运行脚本 `python GetTitleBaiduAndroid.py`
 
 
-
+## 其它
+Tesseract 参数
+https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc
 ## 总结
 
 有了 ADB 截图，怕是各种小辅助都可以玩了。python 写小脚本真的很方便。
