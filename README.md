@@ -17,22 +17,27 @@ adb shell screencap -p /sdcard/screenshot.png
 adb pull /sdcard/screenshot.png .
 ```
 2. OCR 识别题目文字
-用的是谷歌 [Tesseract](https://github.com/madmaze/pytesseract) 
+两个方法：
+	- 谷歌 [Tesseract](https://github.com/madmaze/pytesseract) 
+	- 百度 ORC [livc](https://livc.io/blog/204) ，缺点是需要注册百度 API，每天调用次数有限
 
 3. 调用浏览器百度搜索
 ![](./resources/result.png)
 
-## 使用步骤
+## 使用步骤 (谷歌 [Tesseract](https://github.com/madmaze/pytesseract)) 
 ### Android
 #### 1. 安装 ADB
 
 下载地址：https://adb.clockworkmod.com/
 安装完后插入安卓设备且安卓已打开 USB 调试模式，终端输入 `adb devices` ，显示设备号则表示成功。我手上的机子是坚果 pro1，第一次不成功,查看设备管理器有叹号，使用 [handshaker](https://www.smartisan.com/apps/handshaker) 加载驱动后成功，也可以使用豌豆荚之类的试试。
 #### 2. 安装 python 3
-#### 3. 安装 pytesseract
+#### 3. 安装所需 python 包
 
-命令行：`pip install pytesseract`
-
+命令行：
+```
+pip install pytesseract
+pip install PIL
+```
 #### 4. 安装 谷歌 Tesseract
 
 Windows下链接：
@@ -74,9 +79,25 @@ region = img.crop((50, 350, 1000, 560)) # 坚果 pro1
 
 - `python GetTitleTessIos.py`
 
-## 其他文件说明
+## 使用步骤 (百度 ORC)
 
-`GetTitleBaiduAndroid.py` 和 `GetTitleBaiduIos.py` 为 [livc](https://livc.io/blog/204) 文章代码修改来的，无需下载其他文字识别包，缺点是需要在[百度平台](https://cloud.baidu.com/product/ocr)上申请 API Key 和 Secret Key ，并且每天调用次数有限，安卓版本已测试。
+1. 安装 ADB
+2. 安装 python 3
+3. 安装所需 python 包
+```
+urllib
+requests
+base64
+```
+4. 在[百度平台](https://cloud.baidu.com/product/ocr)上创建应用申请 API Key 和 Secret Key
+5. 在 `GetTitleBaiduAndroid.py` 中加入相应 key
+```
+# 百度OCR API
+api_key = ''
+api_secret = ''
+```
+6. 运行脚本 `python GetTitleBaiduAndroid.py`
+
 
 
 ## 总结

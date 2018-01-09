@@ -31,8 +31,8 @@ region = img.crop((50, 350, 1000, 560)) # 坚果 pro1
 #plt.show()
 
 # 百度OCR API
-api_key = '5dQBPnsySGnrQGD9UZNaOYCX'
-api_secret = '26ISs5EC4xdGSDoYYKYKrEIAFDqZlGXG'
+api_key = ''
+api_secret = ''
 
 
 # 获取token
