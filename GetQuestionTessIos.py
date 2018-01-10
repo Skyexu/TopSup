@@ -6,6 +6,7 @@
 
 import wda
 from PIL import Image
+from common import  ocr, methods
 import os
 import pytesseract
 import webbrowser
