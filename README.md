@@ -37,8 +37,8 @@ adb pull /sdcard/screenshot.png .
 
 1. 直接打开浏览器搜索问题
 ![](./resources/result.png)
-2. 题目+每个选项都通过浏览器搜索，从网页代码中提取搜索结果计数
-3. 只用题目搜索结果页面代码中包含选项的词频计数法
+2. 题目+每个选项都通过搜索引擎搜索，从网页代码中提取搜索结果计数
+3. 只用题目进行搜索，统计结果页面代码中包含选项的词频
 
 以下为两个示例结果
 
@@ -60,7 +60,7 @@ adb pull /sdcard/screenshot.png .
 命令行：
 ```
 pip install pytesseract
-pip install PIL
+pip install pillow  
 pip install requests
 ```
 #### 4. 安装 谷歌 Tesseract
@@ -110,9 +110,9 @@ choices_im = image.crop((75, 535, 990, 1150))
 请移步，[链接](/baiduApiVersion)
 
 ## 其它
-Tesseract 参数，若识别有问题可以更改参数解决
-
+- Tesseract 参数，若识别有问题可以更改参数解决
 https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc
+- 三种方法可以选择，可以加#注释掉只保留一个方法
 ## 总结
 
 有了 ADB 截图，怕是各种小辅助都可以玩了。python 写小脚本真的很方便。
