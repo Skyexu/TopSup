@@ -2,7 +2,7 @@
 # 答题辅助
 这两天冲顶大会直播答题 APP 突然火了起来，萌生了使用截图，文字识别，搜索来做个小辅助的想法。使用文字识别搜索，只能增加准确率，保证不了全对。
 
-**目前版本增加了截图传输效率，修改了识别参数，对图像进行灰度转化，去干扰增加了识别准确率。结果判断使用了三种方式，对不同问题可以参考不同结果。**
+
 
 ![](/resources/screenshot.PNG)
 
@@ -11,11 +11,18 @@
 > 
 > [程序员如何玩转《冲顶大会》？](https://livc.io/blog/204)
 
+
+## 更新
+- 2018.01.10：增加循环，优化逻辑和显示 来自 issue #7，无需重复加载。增加部分手机截图设置,加了个彩蛋来自 issue #18
+- 2018.01.10: 增加了截图传输效率，修改了识别参数，对图像进行灰度转化，去干扰增加了识别准确率。结果判断使用了三种方式，对不同问题可以参考不同结果。
+
+
 ## 版本说明
 - 谷歌 Tesseract
 	- [简单访问浏览器版本](/simpleVersion)
-	- 最新版本：本目录，截图识别题目与选项，用不同方法出结果
+	- 最新版本：本目录
 - [百度 OCR 版本](/simpleVersion)：只实现了简单浏览器搜索，参考本目录代码可改
+
 
 
 ## 具体做法
@@ -88,7 +95,7 @@ tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\t
 会自动识别文字并打开浏览器
 
 **注： 可以用 `GetImgTool.py` 调整题目截取位置**
-
+可以到[这里](/common/devicesCutConfig.txt)查看部分手机截图设置
 若屏幕分辨率不同，请在 ocr.py 中自行修改代码即可
 ```
 # 切割题目和选项位置，左上角坐标和右下角坐标,自行测试分辨率
@@ -101,7 +108,9 @@ choices_im = image.crop((75, 535, 990, 1150))
 
 **未测试**
 
-- 需要安装 WDA 进行截图，参考 https://testerhome.com/topics/7220 ,其他步骤相同。
+- 需要安装 WDA 进行截图，参考 https://testerhome.com/topics/7220 
+- 安装 [python-wda](https://github.com/openatx/facebook-wda)
+- 其他步骤相同。
 
 - `python GetQuestionTessIos.py`
 

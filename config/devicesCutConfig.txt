@@ -1,0 +1,21 @@
+# 冲顶大会
+# 坚果 pro1
+question_im = image.crop((50, 350, 1000, 560))
+choices_im = image.crop((75, 535, 990, 1150))
+
+
+# 锤子 M1L
+question = img.crop((160,480,1280, 700))
+choices = img.crop((170, 760, 1330, 1422))
+
+# mi5
+question_im = image.crop((120, 360, 1000, 540))
+choices_im = image.crop((140, 660, 900, 1200))
+
+# 一加5T
+#冲顶大会
+question_im = image.crop((40, 450, 1050, 680))
+choices_im = image.crop((75, 735, 990, 1270))
+# 西瓜视频
+question_im = image.crop((75, 320, 1000, 530))
+choices_im = image.crop((75, 575, 990, 1050))
