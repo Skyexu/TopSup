@@ -9,7 +9,6 @@ from PIL import Image
 from common import screenshot, ocr, methods
 
 
-print('答题外挂已启动')
 
 while True:
     # 截图
