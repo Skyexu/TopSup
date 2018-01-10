@@ -20,8 +20,8 @@ while True:
     if resptext_dict['msg'] == 'no data':
         print('题目还没出来，请稍后再试')
     else:
-        question = dic['data']['event']['desc'][2:]
-        ch = dic['data']['event']['options']
+        question = resptext_dict['data']['event']['desc'][2:]
+        ch = resptext_dict['data']['event']['options']
         ch = ch[1:len(ch) - 1].replace('"', '')
         choices = ch.split(',')
 
