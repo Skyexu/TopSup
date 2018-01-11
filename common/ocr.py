@@ -6,6 +6,7 @@
 
 from PIL import Image
 import pytesseract
+from PIL import ImageFilter
 
 # 二值化算法
 def binarizing(img,threshold):
@@ -46,14 +47,18 @@ def ocr_img(image):
     choices_im = image.crop((75, 535, 990, 1150))
     # question = img.crop((75, 315, 1167, 789)) # iPhone 7P
 
+    # 边缘增强滤波,不一定适用
+    #question_im = question_im.filter(ImageFilter.EDGE_ENHANCE)
+    #choices_im = choices_im.filter(ImageFilter.EDGE_ENHANCE)
+
     # 转化为灰度图
     question_im = question_im.convert('L')
     choices_im = choices_im.convert('L')
-    # 把图片变成二值图像。
-    question_im=binarizing(question_im,190)
+    # 把图片变成二值图像
+    question_im = binarizing(question_im, 190)
     choices_im = binarizing(choices_im, 190)
-    # img2=depoint(img1)
-    #img1.show()
+    #img=depoint(choices_im)
+    #img.show()
 
     # win环境
     # tesseract 路径
