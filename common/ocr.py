@@ -5,6 +5,7 @@
 # @desc    :
 
 from PIL import Image
+from PIL import ImageFilter
 import pytesseract
 
 # 二值化算法
@@ -46,6 +47,9 @@ def ocr_img(image):
     choices_im = image.crop((75, 535, 990, 1150))
     # question = img.crop((75, 315, 1167, 789)) # iPhone 7P
 
+    # 边缘增强滤波
+    question_im = question_im.filter(ImageFilter.EDGE_ENHANCE)
+    choices_im = choices_im.filter(ImageFilter.EDGE_ENHANCE)
     # 转化为灰度图
     question_im = question_im.convert('L')
     choices_im = choices_im.convert('L')
