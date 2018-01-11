@@ -26,7 +26,7 @@
 - 谷歌 Tesseract
   - [简单访问浏览器版本](/simpleVersion)
   - 最新版本：本目录
-- [百度 OCR 版本](/simpleVersion)：只实现了简单浏览器搜索，参考本目录代码可改
+- [百度 OCR 版本](https://github.com/Skyexu/TopSup/tree/master/baiduApiVersion)：只实现了简单浏览器搜索，参考本目录代码可改
 
 
 
@@ -46,7 +46,7 @@ adb pull /sdcard/screenshot.png .
   两个方法：
 
   - 谷歌 [Tesseract](https://github.com/madmaze/pytesseract) ，安装软件即可，接下来主要使用这个方法
-  - 百度 OCR [livc](https://livc.io/blog/204) ，需要注册百度 API，每天调用次数有限
+  - [百度 OCR](https://cloud.baidu.com/product/ocr) ，[需要]()注册百度 API，每天调用次数有限
 
 3. 搜索判断
 
@@ -132,7 +132,7 @@ tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\t
 
 **注： 可以用 `GetImgTool.py` 调整题目截取位置**
 可以到[这里](/common/devicesCutConfig.txt)查看部分手机截图设置
-若屏幕分辨率不同，请在 ocr.py 中自行修改代码即可
+若屏幕分辨率不同，请在 `ocr.py` 中自行修改代码即可
 ```
 # 切割题目和选项位置，左上角坐标和右下角坐标,自行测试分辨率
 question_im = image.crop((50, 350, 1000, 560)) # 坚果 pro1

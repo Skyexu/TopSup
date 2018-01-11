@@ -4,3 +4,4 @@ test.py
 screenshot.png
 *.py[cod]
 /common/__pycache__
+GetQuestionApi.py
