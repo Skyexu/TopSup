@@ -78,18 +78,19 @@ Windows下链接：
 https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-setup-3.05.01.exe
 - 免安装版：
 https://github.com/parrot-office/tesseract/releases/download/3.5.1/tesseract-Win64.zip
-*免安装版需要下载[中文语言包](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files)*
+*免安装版需要下载[中文语言包](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files)，放置到Tesseract的`tessdata`目录下*
 
 其他系统：
 https://github.com/tesseract-ocr/tesseract/wiki
 
-#### 5. 修改 `GetTitleTessAndroid` 代码相应目录信息（默认安装则无需修改）
+#### 5. 修改 `simpleVersion/GetTitleTessAndroid` 和 `common/ocr` 代码相应目录信息（默认安装则无需修改）
 ```
 # tesseract 路径
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'
 # 语言包目录和参数
 tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\tessdata" --psm 6'
 ```
+
 #### 6. 运行脚本
 `python GetQuestionTessAndroid.py`
 会自动识别文字并打开浏览器
