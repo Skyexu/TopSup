@@ -4,8 +4,8 @@ question_im = image.crop((50, 350, 1000, 560))
 choices_im = image.crop((75, 535, 990, 1150))
 
 
-# 锤子 M1L
-question = img.crop((160,480,1280, 700))
+# 锤子 M1L 更新了多行适配
+question = img.crop((120,400,1330, 700))
 choices = img.crop((170, 760, 1330, 1422))
 
 # mi5
