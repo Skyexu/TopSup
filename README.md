@@ -37,9 +37,14 @@
 adb shell screencap -p /sdcard/screenshot.png
 adb pull /sdcard/screenshot.png .
 ```
-2. OCR 识别题目与选项文字
+2. OCR 识别题目与选项文字   
+
   ![](/resources/cut.png)
+
+  ​
+
   两个方法：
+
   - 谷歌 [Tesseract](https://github.com/madmaze/pytesseract) ，安装软件即可，接下来主要使用这个方法
   - 百度 OCR [livc](https://livc.io/blog/204) ，需要注册百度 API，每天调用次数有限
 
@@ -137,12 +142,13 @@ choices_im = image.crop((75, 535, 990, 1150))
 
 ### IOS
 
-**未测试**
+**部分朋友成功**
 
-- 需要安装 WDA 进行截图，参考 https://testerhome.com/topics/7220 
+- 需要安装 WDA 进行截图，参考
+  -  [iOS 真机如何安装 WebDriverAgent](https://testerhome.com/topics/7220) 
+  - [Android 和 iOS 操作步骤](https://github.com/wangshub/wechat_jump_game/wiki/Android-%E5%92%8C-iOS-%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4)
 - 安装 [python-wda](https://github.com/openatx/facebook-wda)
 - 其他步骤相同。
-
 - `python GetQuestionTessIos.py`
 
 ## 使用步骤 (百度 OCR)
