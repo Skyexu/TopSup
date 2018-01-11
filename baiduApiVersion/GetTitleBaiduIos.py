@@ -34,7 +34,7 @@ token = res['access_token']
 
 
 c.screenshot('screenshot.png')
-im = Image.open("./screenshot.png")
+img = Image.open("./screenshot.png")
 
 region = img.crop((50, 350, 1000, 560)) # 坚果 pro1
 #region = img.crop((75, 315, 1167, 789)) # iPhone 7P
