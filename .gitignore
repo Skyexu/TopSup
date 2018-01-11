@@ -2,3 +2,5 @@ tessdata
 .idea
 test.py
 screenshot.png
+*.py[cod]
+/common/__pycache__
