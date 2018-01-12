@@ -16,7 +16,7 @@
 
 ## 更新日志
 - 2018.01.12
-	- 修复 windows 命令行颜色乱码，处理一些识别错误
+  - 修复 windows 命令行颜色乱码，处理一些识别错误
 - 2018.01.11
   - 修复搜索可能的乱码等一些问题，多线程加快执行
 - 2018.01.10
@@ -149,7 +149,7 @@ choices_im = image.crop((75, 535, 990, 1150))
 
 - 需要安装 WDA 进行截图，参考
   -  [iOS 真机如何安装 WebDriverAgent](https://testerhome.com/topics/7220) 
-  - [Android 和 iOS 操作步骤](https://github.com/wangshub/wechat_jump_game/wiki/Android-%E5%92%8C-iOS-%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4)
+  -  [Android 和 iOS 操作步骤](https://github.com/wangshub/wechat_jump_game/wiki/Android-%E5%92%8C-iOS-%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4)
 - 安装 [python-wda](https://github.com/openatx/facebook-wda)
 - 其他步骤相同。
 - `python GetQuestionTessIos.py`

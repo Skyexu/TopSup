@@ -12,7 +12,7 @@ import time
 
 while True:
     # 截图
-    #screenshot.check_screenshot()
+    screenshot.check_screenshot()
 
     img = Image.open("./screenshot.png")
 
