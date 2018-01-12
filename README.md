@@ -42,7 +42,6 @@ adb pull /sdcard/screenshot.png .
   ![](/resources/cut.png)
 
   ​
-
   两个方法：
 
   - 谷歌 [Tesseract](https://github.com/madmaze/pytesseract) ，安装软件即可，接下来主要使用这个方法
@@ -161,6 +160,7 @@ choices_im = image.crop((75, 535, 990, 1150))
 - Tesseract 参数，若识别有问题可以更改参数解决
   https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc
 - 三种方法可以选择，可以加#注释掉只保留一个方法
+- windows 命令行有很多乱码问题，建议使用 cmder 作为命令工具，可以支持 linux 命令
 - 建了个Q群`565159762`有兴趣的朋友可以互相交流互相帮助
 ## 总结
 
