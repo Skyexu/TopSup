@@ -12,7 +12,7 @@ import time
 
 while True:
     # 截图
-    screenshot.check_screenshot()
+    #screenshot.check_screenshot()
 
     img = Image.open("./screenshot.png")
 
@@ -20,16 +20,6 @@ while True:
     question, choices = ocr.ocr_img(img)
     # t = time.clock()
     # 用不同方法输出结果，取消某个方法在前面加上#
-
-    # # 兼容问题为两行或三行
-    if (choices[0].endswith('?')):
-        question+=choices[0]
-        choices.pop(0)
-    if (choices[1].endswith('?')):
-        question+=choices[0]
-        question+=choices[1]
-        choices.pop(0)
-        choices.pop(1)
 
     # # 打开浏览器方法搜索问题
     # methods.run_algorithm(0, question, choices)

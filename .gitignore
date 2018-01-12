@@ -3,5 +3,6 @@ tessdata
 test.py
 screenshot.png
 *.py[cod]
-/common/__pycache__
+common/__pycache__
 GetQuestionApi.py
+common/*.py[cod]

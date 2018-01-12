@@ -9,7 +9,7 @@ import webbrowser
 import urllib.parse
 
 # # 颜色兼容Win 10
-from colorama import init
+from colorama import init,Fore
 init()
 
 def open_webbrowser(question):
@@ -53,25 +53,26 @@ def output(choices, counts):
     counts = list(map(int, counts))
     #print(choices, counts)
 
-    # 最可能的答案
+    # 计数最高
     index_max = counts.index(max(counts))
 
-    # 最不可能的答案
+    # 计数最少
     index_min = counts.index(min(counts))
 
     if index_max == index_min:
-        print("\033[1;31m此方法失效！\033[0m")
+        print(Fore.RED + "高低计数相等此方法失效！" + Fore.RESET)
         return
 
     for i in range(len(choices)):
+        print()
         if i == index_max:
             # 绿色为计数最高的答案
-            print("\033[1;32m{0:^10} {1:^10}\033[0m".format(choices[i], counts[i]))
+            print(Fore.GREEN + "{0} : {1} ".format(choices[i], counts[i]) + Fore.RESET)
         elif i == index_min:
             # 红色为计数最低的答案
-            print("\033[0;31m{0:^10}{1:^10}\033[0m".format(choices[i], counts[i]))
+            print(Fore.MAGENTA + "{0} : {1}".format(choices[i], counts[i]) + Fore.RESET)
         else:
-            print("{0:^10} {1:^10}".format(choices[i], counts[i]))
+            print("{0} : {1}".format(choices[i], counts[i]))
 
 
 def run_algorithm(al_num, question, choices):
