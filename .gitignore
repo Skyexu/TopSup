@@ -1,7 +1,7 @@
 tessdata
 .idea
 test.py
-screenshot.png
+./screenshot.png
 *.py[cod]
 common/__pycache__
 GetQuestionApi.py

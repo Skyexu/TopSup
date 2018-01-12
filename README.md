@@ -6,7 +6,7 @@
 
 **非常感谢关注，欢迎大家PR新的想法和优化。**
 
-![](/resources/screenshot.PNG)
+![](/resources/screenshot.png)
 
 灵感来自：
 > [微信跳一跳辅助 ](https://github.com/wangshub/wechat_jump_game)
@@ -15,6 +15,8 @@
 
 
 ## 更新日志
+- 2018.01.12
+	- 修复 windows 命令行颜色乱码，处理一些识别错误
 - 2018.01.11
   - 修复搜索可能的乱码等一些问题，多线程加快执行
 - 2018.01.10
