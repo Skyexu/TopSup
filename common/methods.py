@@ -8,6 +8,10 @@ import requests
 import webbrowser
 import urllib.parse
 
+# # 颜色兼容Win 10
+from colorama import init
+init()
+
 def open_webbrowser(question):
     webbrowser.open('https://baidu.com/s?wd=' + urllib.parse.quote(question))
 

@@ -75,9 +75,13 @@ def ocr_img(image):
     # lang 指定中文简体
     question = pytesseract.image_to_string(question_im, lang='chi_sim', config=tessdata_dir_config)
     question = question.replace("\n", "")[2:]
+    # 处理谷歌将“一”识别为“_”
+    question = question.replace("_", "一")
+
 
     choice = pytesseract.image_to_string(choices_im, lang='chi_sim', config=tessdata_dir_config)
-    choices = choice.strip().split("\n")
+    # 处理谷歌将“一”识别为“_”
+    choices = choice.strip().replace("_", "一").split("\n")
     choices = [ x for x in choices if x != '' ]
 
     return question, choices

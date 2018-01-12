@@ -97,6 +97,8 @@ List of devices attached
 pip install pytesseract
 pip install pillow  
 pip install requests
+pip install colorama
+
 ```
 #### 4. 安装 谷歌 Tesseract
 
