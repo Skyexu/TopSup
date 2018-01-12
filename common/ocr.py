@@ -45,7 +45,7 @@ def ocr_img(image):
     # 切割题目和选项位置，左上角坐标和右下角坐标,自行测试分辨率
     question_im = image.crop((50, 350, 1000, 560)) # 坚果 pro1
     choices_im = image.crop((75, 535, 990, 1150))
-    # question = img.crop((75, 315, 1167, 789)) # iPhone 7P
+    # question = image.crop((75, 315, 1167, 789)) # iPhone 7P
 
     # 边缘增强滤波,不一定适用
     #question_im = question_im.filter(ImageFilter.EDGE_ENHANCE)

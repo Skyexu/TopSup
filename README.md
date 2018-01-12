@@ -131,7 +131,7 @@ tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\t
 会自动识别文字并打开浏览器
 
 **注： 可以用 `GetImgTool.py` 调整题目截取位置**
-可以到[这里](/common/devicesCutConfig.txt)查看部分手机截图设置
+可以到[这里](/config/devicesCutConfig.txt)查看部分手机截图设置
 若屏幕分辨率不同，请在 `ocr.py` 中自行修改代码即可
 ```
 # 切割题目和选项位置，左上角坐标和右下角坐标,自行测试分辨率
