@@ -94,6 +94,9 @@ List of devices attached
 #### 3. 安装所需 python 包
 
 命令行：
+`pip install -r requirements.txt`
+
+或者
 ```
 pip install pytesseract
 pip install pillow  
@@ -163,7 +166,8 @@ choices_im = image.crop((75, 535, 990, 1150))
   https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc
 - 三种方法可以选择，可以加#注释掉只保留一个方法
 - windows 命令行有很多乱码问题，建议使用 cmder 作为命令工具，可以支持 linux 命令
-- 建了个Q群`565159762`有兴趣的朋友可以互相交流互相帮助
+
+
 ## 总结
 
 有了 ADB 截图，怕是各种小辅助都可以玩了。python 写小脚本真的很方便。
