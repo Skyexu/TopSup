@@ -19,3 +19,12 @@ choices_im = image.crop((75, 735, 990, 1270))
 # 西瓜视频
 question_im = image.crop((75, 320, 1000, 530))
 choices_im = image.crop((75, 575, 990, 1050))
+
+############## iPhone 6 ####################
+# 冲顶大会\百万英雄 皆可
+question_im = image.crop((50, 250, 700, 520))
+choices_im = image.crop((50, 520, 700, 880))
+
+# 芝士超人
+question_im = image.crop((50, 150, 730, 350))
+choices_im = image.crop((40, 360, 730, 750))
