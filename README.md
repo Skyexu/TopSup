@@ -1,6 +1,6 @@
 
 # 答题辅助
-这两天冲顶大会直播答题 APP 突然火了起来，萌生了使用截图，文字识别，搜索来做个小辅助的想法。使用文字识别搜索，只能增加准确率，保证不了全对。
+这两天冲顶大会之类的直播答题 APP 突然火了起来，萌生了使用截图，文字识别，搜索来做个小辅助的想法。使用文字识别搜索，只能增加准确率，保证不了全对。
 
 
 
@@ -8,13 +8,24 @@
 
 ![](/resources/screenshot.png)
 
-灵感来自：
-> [微信跳一跳辅助 ](https://github.com/wangshub/wechat_jump_game)
->
-> [程序员如何玩转《冲顶大会》？](https://livc.io/blog/204)
+**目录**
+
+- [答题辅助](#答题辅助)
+  - [更新日志](#更新日志)
+  - [具体做法](#具体做法)
+  - [结果判断方式](#结果判断方式)
+  - [使用步骤 (谷歌 Tesseract)](#使用步骤 (谷歌 Tesseract))
+  - [使用步骤 (百度 OCR)](#使用步骤-(百度-OCR))
+- [其它](#其它)
+- [总结](#总结)
+- [Next](#Next)
+
 
 
 ## 更新日志
+
+- 2018.01.14
+  - 文字识别方法集成 baidu ocr ，相对来说识别快 ，可在运行代码中选择想要用的 ocr 方式，题目和选项一次截取识别
 - 2018.01.12
   - 修复 windows 命令行颜色乱码，处理一些识别错误
 - 2018.01.11
@@ -24,11 +35,6 @@
   - 增加了截图传输效率，修改了识别参数，对图像进行灰度转化，去干扰，增加了识别准确率。结果判断使用了三种方式，对不同问题可以参考不同结果。
 
 
-## 版本说明
-- 谷歌 Tesseract
-  - [简单访问浏览器版本](/simpleVersion)
-  - 最新版本：本目录
-- [百度 OCR 版本](https://github.com/Skyexu/TopSup/tree/master/baiduApiVersion)：只实现了简单浏览器搜索，参考本目录代码可改
 
 
 
@@ -46,8 +52,8 @@ adb pull /sdcard/screenshot.png .
   ​
   两个方法：
 
-  - 谷歌 [Tesseract](https://github.com/madmaze/pytesseract) ，安装软件即可，接下来主要使用这个方法
-  - [百度 OCR](https://cloud.baidu.com/product/ocr) ，[需要]()注册百度 API，每天调用次数有限
+  - 谷歌 [Tesseract](https://github.com/madmaze/pytesseract) ，安装软件即可，不同电脑配置运行效率不同
+  - [百度 OCR](https://cloud.baidu.com/product/ocr) ，需要注册百度 API，每天调用次数有限
 
 3. 搜索判断
 
@@ -66,7 +72,7 @@ adb pull /sdcard/screenshot.png .
 
 参考了 [I Hacked HQ Trivia But Here’s How They Can Stop Me](https://hackernoon.com/i-hacked-hq-trivia-but-heres-how-they-can-stop-me-68750ed16365)
 
-## 使用步骤 (谷歌 [Tesseract](https://github.com/madmaze/pytesseract)) 
+## 使用步骤 (谷歌 Tesseract) 
 ### Android
 
 #### 1. 安装 ADB
@@ -132,19 +138,25 @@ tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\t
 #tessdata_dir_config = '--tessdata-dir "/usr/local/Cellar/tesseract/3.05.01/share/tessdata/" --psm 6'
 ```
 
-#### 6. 运行脚本
-`python GetQuestionTessAndroid.py`
-会自动识别文字并打开浏览器
+#### 6. 修改  `common/ocr.py` 截图参数
+
+```
+# 根据自己的手机或者模拟器修改这个题目与选项区域即可
+# 分别截题目和选项
+question_region = [50, 350, 1000, 560]
+choices_region = [75, 535, 1000, 1200]
+
+# 题目和选项一起截
+combine_region = [50, 350, 1000, 1200]
+```
 
 **注： 可以用 `GetImgTool.py` 调整题目截取位置**
 可以到[这里](/config/devicesCutConfig.txt)查看部分手机截图设置
-若屏幕分辨率不同，请在 `ocr.py` 中自行修改代码即可
-```
-# 切割题目和选项位置，左上角坐标和右下角坐标,自行测试分辨率
-question_im = image.crop((50, 350, 1000, 560)) # 坚果 pro1
-choices_im = image.crop((75, 535, 990, 1150))
-# question = img.crop((75, 315, 1167, 789)) # iPhone 7P
-```
+
+#### 7. 运行脚本
+
+`python GetQuestionTessAndroid.py`
+会自动识别文字并打开浏览器
 
 ### IOS
 
@@ -159,13 +171,52 @@ choices_im = image.crop((75, 535, 990, 1150))
 
 ## 使用步骤 (百度 OCR)
 
-请移步，[链接](/baiduApiVersion)
+1. 在[百度平台](https://cloud.baidu.com/product/ocr)上创建应用申请 API Key 和 Secret Key
+
+2. 在 `common/ocr.py` 中加入相应 key
+
+       """ 你的 APPID AK SK """
+       APP_ID = ''
+       API_KEY = ''
+       SECRET_KEY = ''
+
+
+3. 在`GetQuestionAndroid.py`中切换识别方法
+
+   ```
+   """
+   ocr_img: 需要分别截取题目和选项区域，使用 Tesseract
+   ocr_img_tess： 题目和选项一起截，使用 Tesseract
+   ocr_img_baidu： 题目和选项一起截，使用 baidu ocr，需配置 key
+   """
+   # question, choices = ocr.ocr_img(img)
+   # question, choices = ocr.ocr_img_tess(img)
+   question, choices = ocr.ocr_img_baidu(img)
+   ```
+
+   ​
+
+4. 其他步骤与谷歌 Tesseract 方法相同
+
+5. 运行脚本 
+
+   安卓： `python GetQuestionAndroid.py`
 
 ## 其它
 - Tesseract 参数，若识别有问题可以更改参数解决
   https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc
+
 - 三种方法可以选择，可以加#注释掉只保留一个方法
+
 - windows 命令行有很多乱码问题，建议使用 cmder 作为命令工具，可以支持 linux 命令
+
+- 版本说明
+
+  - [简单验证思路访问浏览器版本](/simpleVersion)
+
+  - 最新版本：本目录
+
+    ​
 
 
 ## 总结
@@ -175,3 +226,6 @@ choices_im = image.crop((75, 535, 990, 1150))
 ## Next
 
 - 文字识别后 nlp 处理一下关系，然后搜索不同选择结果
+
+
+

@@ -12,13 +12,27 @@ import time
 
 while True:
     # 截图
+    #t = time.clock()
     screenshot.check_screenshot()
+
+    #end_time = time.clock()
+    #print(end_time - t)
 
     img = Image.open("./screenshot.png")
 
-    # 文字识别
+    # 文字识别,可选 Tesseract 和 Baidu ,请在 orc.py 中进行相应配置
+    """
+    ocr_img: 需要分别截取题目和选项区域，使用 Tesseract
+    ocr_img_tess： 题目和选项一起截，使用 Tesseract
+    ocr_img_baidu： 题目和选项一起截，使用 baidu ocr，需配置 key
+    """
     question, choices = ocr.ocr_img(img)
-    # t = time.clock()
+    # question, choices = ocr.ocr_img_tess(img)
+    # question, choices = ocr.ocr_img_baidu(img)
+
+    #end_time2 = time.clock()
+    #print(end_time2 - end_time)
+
     # 用不同方法输出结果，取消某个方法在前面加上#
 
     # # 打开浏览器方法搜索问题
@@ -36,8 +50,9 @@ while True:
     m2.start()
     m3.start()
 
-    # end_time = time.clock()
-    # print(end_time - t)
+    #end_time3 = time.clock()
+    #print(end_time3 - end_time2)
+
     go = input('输入回车继续运行,输入 n 回车结束运行: ')
     if go == 'n':
         break
