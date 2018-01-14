@@ -7,7 +7,6 @@ import os
 import sys
 from PIL import Image
 
-
 # SCREENSHOT_WAY 是截图方法，经过 check_screenshot 后，会自动递减，不需手动修改
 SCREENSHOT_WAY = 3
 
@@ -27,15 +26,21 @@ def pull_screenshot():
             binary_screenshot = binary_screenshot.replace(b'\r\n', b'\n')
             # binary_screenshot = binary_screenshot.split(b' ')
             # binary_screenshot = binary_screenshot[len(binary_screenshot) - 1]
-            #print(binary_screenshot)
+            # print(binary_screenshot)
         elif SCREENSHOT_WAY == 1:
             binary_screenshot = binary_screenshot.replace(b'\r\r\n', b'\n')
-        f = open('screenshot.png', 'wb')
-        f.write(binary_screenshot)
-        f.close()
+        return binary_screenshot
+        # f = open('screenshot.png', 'wb')
+        # f.write(binary_screenshot)
+        # f.close()
     elif SCREENSHOT_WAY == 0:
         os.system('adb shell screencap -p /sdcard/screenshot.png')
         os.system('adb pull /sdcard/screenshot.png .')
+        file = open('./screenshot.png', 'b')
+        try:
+            return file.read()
+        finally:
+            file.close()
 
 
 def check_screenshot():
@@ -51,13 +56,14 @@ def check_screenshot():
     if SCREENSHOT_WAY < 0:
         print('暂不支持当前设备')
         sys.exit()
-    pull_screenshot()
-    try:
-        Image.open('./screenshot.png').load()
+    screenshot = pull_screenshot()
+    if screenshot is not None:
         print('采用方式 {} 获取截图'.format(SCREENSHOT_WAY))
-    except Exception:
+        return screenshot
+    else:
         SCREENSHOT_WAY -= 1
         check_screenshot()
+
 
 if __name__ == '__main__':
     check_screenshot()
