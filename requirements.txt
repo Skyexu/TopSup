@@ -1,0 +1,5 @@
+requests==2.14.2
+matplotlib==2.1.1
+Pillow==4.3.0
+colorama==0.3.9
+pytesseract==0.1.7
