@@ -1,14 +1,13 @@
-# 冲顶大会
-# 坚果 pro1
+# 坚果 pro1 , 冲顶，百万
 question_im = image.crop((50, 350, 1000, 560))
-choices_im = image.crop((75, 535, 990, 1150))
+choices_im = image.crop((75, 535, 990, 1200))
+combine_region = [50, 350, 1000, 1200]
 
-
-# 锤子 M1L
+# 锤子 M1L , 冲顶
 question = img.crop((120,400,1330, 700))
 choices = img.crop((170, 760, 1330, 1422))
 
-# mi5
+# mi5, 冲顶
 question_im = image.crop((120, 360, 1000, 540))
 choices_im = image.crop((140, 660, 900, 1200))
 
@@ -19,3 +18,25 @@ choices_im = image.crop((75, 735, 990, 1270))
 # 西瓜视频
 question_im = image.crop((75, 320, 1000, 530))
 choices_im = image.crop((75, 575, 990, 1050))
+
+# mate9普通版 西瓜
+question_im = image.crop((80, 350, 1000, 550))
+choices_im = image.crop((75, 645, 1000, 1150))
+
+
+#三星 S8
+question = img.crop((50, 320, 1000, 500))
+choices = img.crop((75, 560, 1000, 980))
+
+# 华为v9 5.7 英寸，西瓜
+question_im = image.crop((100, 500, 1312, 805))
+choices_im = image.crop((100, 820, 1200, 1670))
+
+# iPhone 6
+# 冲顶大会\百万英雄
+question_im = image.crop((50, 250, 700, 520))
+choices_im = image.crop((50, 520, 700, 880))
+# 芝士超人
+question_im = image.crop((50, 150, 730, 350))
+choices_im = image.crop((40, 360, 730, 750))
+

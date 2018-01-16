@@ -25,7 +25,7 @@
 ## 更新日志
 
 - 2018.01.14
-  - 文字识别方法集成 baidu ocr ，相对来说识别快 ，可在运行代码中选择想要用的 ocr 方式，题目和选项一次截取识别
+  - 文字识别方法集成 baidu ocr ，相对来说识别快 ，可在运行代码中选择想要用的 ocr 方式；题目和选项一次截取识别；将需要配置的参数统一调整到 `config/configure.conf`中
 - 2018.01.12
   - 修复 windows 命令行颜色乱码，处理一些识别错误
 - 2018.01.11
@@ -123,37 +123,31 @@ Windows下链接：
 其他系统：
 https://github.com/tesseract-ocr/tesseract/wiki
 
-#### 5. 修改  `common/ocr.py` 代码相应目录信息
+#### 5. 修改  `config/configure.conf` 代码相应参数信息
 ```
-# win环境
-# tesseract 路径
-pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'
+[region]
+# 题目与选项区域
+question_region = 50, 350, 1000, 560
+choices_region = 75, 535, 1000, 1200
+
+# 题目和选项一起的区域
+combine_region = 50, 350, 1000, 1200
+
+[tesseract]
+# windows
+# tesseract 安装路径
+tesseract_cmd = C:\\Program Files (x86)\\Tesseract-OCR\\tesseract
+
 # 语言包目录和参数
-tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\tessdata" --psm 6'
+tessdata_dir_config = --tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\tessdata" --psm 6
 
-# mac 环境 记得自己安装训练文件
-# tesseract 路径
-#pytesseract.pytesseract.tesseract_cmd = '/usr/local/Cellar/tesseract/3.05.01/bin/tesseract'
-# 语言包目录和参数
-#tessdata_dir_config = '--tessdata-dir "/usr/local/Cellar/tesseract/3.05.01/share/tessdata/" --psm 6'
-```
-
-#### 6. 修改  `common/ocr.py` 截图参数
-
-```
-# 根据自己的手机或者模拟器修改这个题目与选项区域即可
-# 分别截题目和选项
-question_region = [50, 350, 1000, 560]
-choices_region = [75, 535, 1000, 1200]
-
-# 题目和选项一起截
-combine_region = [50, 350, 1000, 1200]
+# mac 环境, 文件夹分割请使用 / 代替 \\ 如 '/usr/local/Cellar/tesseract/3.05.01/bin/tesseract'
 ```
 
 **注： 可以用 `GetImgTool.py` 调整题目截取位置**
 可以到[这里](/config/devicesCutConfig.txt)查看部分手机截图设置
 
-#### 7. 运行脚本
+#### 6. 运行脚本
 
 `python GetQuestionTessAndroid.py`
 会自动识别文字并打开浏览器
@@ -173,40 +167,41 @@ combine_region = [50, 350, 1000, 1200]
 
 1. 在[百度平台](https://cloud.baidu.com/product/ocr)上创建应用申请 API Key 和 Secret Key
 
-2. 在 `common/ocr.py` 中加入相应 key
+2. ` pip install baidu-aip`
 
-       """ 你的 APPID AK SK """
-       APP_ID = ''
-       API_KEY = ''
-       SECRET_KEY = ''
+3. 在 `config/configure.conf` 中加入相应 key, 并设置截取区域
 
+      [region]
+      # 题目和选项一起的区域
+      combine_region = 50, 350, 1000, 1200
+      
+      [baidu_api]
+      APP_ID = 
+      API_KEY = 
+      SECRET_KEY = 
 
-3. 在`GetQuestionAndroid.py`中切换识别方法
+4. 在`GetQuestionAndroid.py`中切换识别方法
 
-   ```
-   """
-   ocr_img: 需要分别截取题目和选项区域，使用 Tesseract
-   ocr_img_tess： 题目和选项一起截，使用 Tesseract
-   ocr_img_baidu： 题目和选项一起截，使用 baidu ocr，需配置 key
-   """
-   # question, choices = ocr.ocr_img(img)
-   # question, choices = ocr.ocr_img_tess(img)
-   question, choices = ocr.ocr_img_baidu(img)
-   ```
-
-   ​
-
-4. 其他步骤与谷歌 Tesseract 方法相同
+  ```
+  #ocr_img: 需要分别截取题目和选项区域，使用 Tesseract
+  #ocr_img_tess： 题目和选项一起截，使用 Tesseract
+  #ocr_img_baidu： 题目和选项一起截，使用 baidu ocr，需配置 key
+      
+  # question, choices = ocr.ocr_img(img, config)
+  # question, choices = ocr.ocr_img_tess(img, config)
+  question, choices = ocr.ocr_img_baidu(img, config)
+  ```
 
 5. 运行脚本 
 
    安卓： `python GetQuestionAndroid.py`
 
+
 ## 其它
 - Tesseract 参数，若识别有问题可以更改参数解决
   https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc
 
-- 三种方法可以选择，可以加#注释掉只保留一个方法
+- 结果分析三种方法可以选择，可以加#注释掉只保留一个方法
 
 - windows 命令行有很多乱码问题，建议使用 cmder 作为命令工具，可以支持 linux 命令
 

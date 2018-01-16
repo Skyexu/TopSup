@@ -9,10 +9,16 @@ from PIL import Image
 from common import screenshot, ocr, methods
 from threading import Thread
 import time
+import configparser
+
+# 读取配置文件
+config = configparser.ConfigParser()
+config.read('./config/configure.conf', encoding='utf-8')
+
 
 while True:
     # 截图
-    #t = time.clock()
+    t = time.clock()
     screenshot.check_screenshot()
 
     #end_time = time.clock()
@@ -21,14 +27,14 @@ while True:
     img = Image.open("./screenshot.png")
 
     # 文字识别,可选 Tesseract 和 Baidu ,请在 orc.py 中进行相应配置
-    """
-    ocr_img: 需要分别截取题目和选项区域，使用 Tesseract
-    ocr_img_tess： 题目和选项一起截，使用 Tesseract
-    ocr_img_baidu： 题目和选项一起截，使用 baidu ocr，需配置 key
-    """
-    question, choices = ocr.ocr_img(img)
-    # question, choices = ocr.ocr_img_tess(img)
-    # question, choices = ocr.ocr_img_baidu(img)
+
+    #ocr_img: 需要分别截取题目和选项区域，使用 Tesseract
+    #ocr_img_tess： 题目和选项一起截，使用 Tesseract
+    #ocr_img_baidu： 题目和选项一起截，使用 baidu ocr，需配置 key
+    
+    # question, choices = ocr.ocr_img(img, config)
+    question, choices = ocr.ocr_img_tess(img, config)
+    # question, choices = ocr.ocr_img_baidu(img, config)
 
     #end_time2 = time.clock()
     #print(end_time2 - end_time)
@@ -50,8 +56,8 @@ while True:
     m2.start()
     m3.start()
 
-    #end_time3 = time.clock()
-    #print(end_time3 - end_time2)
+    end_time3 = time.clock()
+    print('用时: {0}'.format(end_time3 - t))
 
     go = input('输入回车继续运行,输入 n 回车结束运行: ')
     if go == 'n':
