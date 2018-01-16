@@ -25,7 +25,9 @@
 ## 更新日志
 
 - 2018.01.14
-  - 文字识别方法集成 baidu ocr ，相对来说识别快 ，可在运行代码中选择想要用的 ocr 方式；题目和选项一次截取识别；将需要配置的参数统一调整到 `config/configure.conf`中
+  - 文字识别方法集成 baidu ocr ，相对来说识别快 ，可在运行代码中选择想要用的 ocr 方式
+  - 题目和选项一次截取识别
+  - 将需要配置的参数统一调整到 `config/configure.conf`中
 - 2018.01.12
   - 修复 windows 命令行颜色乱码，处理一些识别错误
 - 2018.01.11
@@ -79,7 +81,7 @@ adb pull /sdcard/screenshot.png .
 
 **windows**
 
-下载地址：https://adb.clockworkmod.com/
+下载地址：https://adb.clockworkmod.com/ ，并配置环境变量
 
 **Mac**
 
@@ -123,7 +125,7 @@ Windows下链接：
 其他系统：
 https://github.com/tesseract-ocr/tesseract/wiki
 
-#### 5. 修改  `config/configure.conf` 代码相应参数信息
+#### 5. 修改  `config/configure.conf` 中相应参数信息
 ```
 [region]
 # 题目与选项区域
