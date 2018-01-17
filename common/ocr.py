@@ -43,8 +43,26 @@ def depoint(img):   #input: gray image
 def ocr_img(image):
 
     # 切割题目和选项位置，左上角坐标和右下角坐标,自行测试分辨率
+    w,h = image.size
     question_im = image.crop((50, 350, 1000, 560)) # 坚果 pro1
-    choices_im = image.crop((75, 535, 990, 1150))
+
+    # 自动识别题板高度
+    # white_sum = 0
+    piece_y_max = 1150
+    im_pixel = image.load()
+    scan_x_border = int(w / 2)
+    scan_start_y = int(h / 2) 
+    for i in range(scan_start_y, h):
+        white_sum=0
+        for j in range(scan_x_border-50, scan_x_border+50):
+            pixel = im_pixel[j, i]
+            if (abs(pixel[1]-pixel[0])<5 and abs(pixel[1]-pixel[2])<5):
+                white_sum = white_sum + 1
+        if (white_sum<20):
+            piece_y_max = max(i, piece_y_max)
+            break;
+
+    choices_im = image.crop((75, 535, 990, piece_y_max))
     # question = image.crop((75, 315, 1167, 789)) # iPhone 7P
 
     # 边缘增强滤波,不一定适用
@@ -78,21 +96,28 @@ def ocr_img(image):
     # 处理将"一"识别为"_"的问题
     question = question.replace("_", "一")
 
-
     choice = pytesseract.image_to_string(choices_im, lang='chi_sim', config=tessdata_dir_config)
     # 处理将"一"识别为"_"的问题
     choices = choice.strip().replace("_", "一").split("\n")
     choices = [ x for x in choices if x != '' ]
 
-    # 兼容截图设置不对，意外出现问题为两行或三行
-    if (choices[0].endswith('?')):
-        question += choices[0]
-        choices.pop(0)
-    if (choices[1].endswith('?')):
-        question += choices[0]
-        question += choices[1]
-        choices.pop(0)
-        choices.pop(1)
+    # 兼容问题为多行
+    question_length = 0
+    for i in range(len(choices)):
+        if (choices[i].endswith('?')):
+            j=0
+            while (j<i):
+                question += choices[j]
+                j=j+1
+            j=i
+            while (j>-1):
+                choices.pop(j)
+                j=j-1
+            question_length = i;
+            break
+    i=0
+    while (len(choices)>3):
+        choices.pop()        
 
     return question, choices
 
