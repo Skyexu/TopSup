@@ -16,11 +16,11 @@
   - [更新日志](#更新日志)
   - [具体做法](#具体做法)
   - [结果判断方式](#结果判断方式)
-  - [使用步骤 (谷歌 Tesseract)](#使用步骤 (谷歌 Tesseract))
-  - [使用步骤 (百度 OCR)](#使用步骤 (百度 OCR))
+  - [使用步骤 (谷歌 Tesseract)](#使用步骤-谷歌-tesseract)
+  - [使用步骤 (百度 OCR)](#使用步骤-百度-ocr)
 - [其它](#其它)
 - [总结](#总结)
-- [Next](#Next)
+- [Next](#next)
 
 
 
@@ -76,7 +76,7 @@ adb pull /sdcard/screenshot.png .
 
 参考了 [I Hacked HQ Trivia But Here’s How They Can Stop Me](https://hackernoon.com/i-hacked-hq-trivia-but-heres-how-they-can-stop-me-68750ed16365)
 
-## 使用步骤 (谷歌 Tesseract) 
+## 使用步骤 (谷歌 Tesseract)
 ### Android
 
 #### 1. 安装 ADB
