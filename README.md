@@ -1,6 +1,8 @@
 
 # 答题辅助
-这两天冲顶大会之类的直播答题 APP 突然火了起来，萌生了使用截图，文字识别，搜索来做个小辅助的想法。使用文字识别搜索，只能增加准确率，保证不了全对。
+这两天冲顶大会之类的直播答题 APP 突然火了起来，萌生了使用截图，文字识别，搜索来做个小辅助的想法。
+
+因为时间、搜索结果等原因，使用文字识别搜索，能提供的辅助作用有限。
 
 
 
@@ -173,14 +175,15 @@ tessdata_dir_config = --tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\te
 
 3. 在 `config/configure.conf` 中加入相应 key, 并设置截取区域
 
+      ```
       [region]
       # 题目和选项一起的区域
       combine_region = 50, 350, 1000, 1200
-      
       [baidu_api]
       APP_ID = 
       API_KEY = 
       SECRET_KEY = 
+      ```
 
 4. 在`GetQuestionAndroid.py`中切换识别方法
 
@@ -203,9 +206,9 @@ tessdata_dir_config = --tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\te
 - Tesseract 参数，若识别有问题可以更改参数解决
   https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc
 
-- 结果分析三种方法可以选择，可以加#注释掉只保留一个方法
+- 结果分析三种方法可以选择，可以加`#`注释掉只保留一个方法
 
-- windows 命令行有很多乱码问题，建议使用 cmder 作为命令工具，可以支持 linux 命令
+- windows 命令行有很多乱码问题，建议使用 [cmder](http://cmder.net/) 作为命令工具，可以支持 linux 命令
 
 - 版本说明
 
