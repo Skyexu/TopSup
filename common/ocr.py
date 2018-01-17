@@ -184,6 +184,7 @@ def ocr_img_baidu(image, config):
     image_data = img_byte_arr.getvalue()
     # base64_data = base64.b64encode(image_data)
     response = client.basicGeneral(image_data)
+    #print(response)
     words_result = response['words_result']
 
     texts = [x['words'] for x in words_result]
