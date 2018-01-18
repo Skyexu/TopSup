@@ -44,27 +44,120 @@ def ocr_img(image):
 
     # 切割题目和选项位置，左上角坐标和右下角坐标,自行测试分辨率
     w,h = image.size
-    question_im = image.crop((50, 350, 1000, 560)) # 坚果 pro1
+    #读取图像 
 
-    # 自动识别题板高度
-    # white_sum = 0
-    piece_y_max = 1150
+    #支持平板 
+    if (w>h):
+        image = image.transpose(Image.ROTATE_270) 
+        temp = w
+        w = h
+        h = temp
+
     im_pixel = image.load()
-    scan_x_border = int(w / 2)
-    scan_start_y = int(h / 2) 
-    for i in range(scan_start_y, h):
-        white_sum=0
-        for j in range(scan_x_border-50, scan_x_border+50):
-            pixel = im_pixel[j, i]
-            if (abs(pixel[1]-pixel[0])<5 and abs(pixel[1]-pixel[2])<5):
-                white_sum = white_sum + 1
-        if (white_sum<20):
-            piece_y_max = max(i, piece_y_max)
-            break;
+    os = 'hj';
 
-    choices_im = image.crop((75, 535, 990, piece_y_max))
+    if (os=='zs'):
+        #芝士超人
+        # 自动识别问题开始
+        scan_x_border = int(w / 4)
+        scan_start_y = 200 
+        question_start = 200
+        for i in range(scan_start_y, h):
+            white_sum=0
+            for j in range(scan_x_border-50, scan_x_border+50):
+                pixel = im_pixel[j, i]
+                if (pixel[1]==255 and pixel[1]==255 and pixel[2]==255):
+                    white_sum = white_sum + 1
+            if (white_sum!=100):
+                question_start = max(i, question_start)
+                break;
+
+        # 自动识别问题结束
+        scan_x_border = int(w / 4)
+        scan_start_y = question_start 
+        question_end = 200
+        for i in range(scan_start_y, h):
+            white_sum=0
+            for j in range(scan_x_border-50, scan_x_border+50):
+                pixel = im_pixel[j, i]
+                if (pixel[0]==196 and pixel[1]==196 and pixel[2]==196):
+                    white_sum = white_sum + 1
+            if (white_sum==100):
+                question_end = max(i, question_end)
+                break;
+
+        question_im = image.crop((50, question_start, 1000, question_end)) 
+
+        # 自动识别题板高度
+        piece_y_max = question_end
+        scan_x_border = int(w / 2)
+        scan_start_y =  piece_y_max
+        for i in range(scan_start_y, h):
+            if (piece_y_max != question_end):
+                break
+            for j in range(scan_x_border-50, scan_x_border+50):
+                pixel = im_pixel[j, i]
+                if (abs(pixel[1]-pixel[0])>3 or abs(pixel[1]-pixel[2])>3):
+                    piece_y_max = max(i, piece_y_max)
+                    break
+
+        choices_im = image.crop((75, question_end, 1000, piece_y_max))
+
+        answer_height = 100
+
+    if (os=='hj'):
+        #花椒直播
+        # 自动识别问题开始
+
+        scan_x_border = int(w / 2)
+        scan_start_y = 300 
+        question_start = 300
+        for i in range(scan_start_y, h):
+            white_sum=0
+            for j in range(scan_x_border-50, scan_x_border+50):
+                pixel = im_pixel[j, i]
+                if ((255-pixel[0])<10 and (255-pixel[1])<10 and (255-pixel[2])<10):
+                    white_sum = white_sum + 1
+            if (white_sum!=100):
+                question_start = max(i, question_start)
+                break;
+
+        # 自动识别问题结束
+        scan_x_border = int(w / 2)
+        scan_start_y = question_start 
+        question_end = question_start
+        for i in range(scan_start_y, h):
+            white_sum=0
+            for j in range(scan_x_border-50, scan_x_border+50):
+                pixel = im_pixel[j, i]
+                if (abs(220-pixel[0])<5 and abs(220-pixel[1])<5 and abs(220-pixel[2])<5):
+                    white_sum = white_sum + 1
+            if (white_sum==100):
+                question_end = max(i, question_end)
+                break;
+
+        question_im = image.crop((50, question_start, 1000, question_end)) 
+
+        # 自动识别题板高度
+        piece_y_max = question_end
+        scan_x_border = int(w / 2)
+        for i in range(question_end, h):
+            white_sum=0
+            for j in range(scan_x_border-50, scan_x_border+50):
+                pixel = im_pixel[j, i]
+                if (pixel[0]<100 and pixel[1]<100 and pixel[2]<100):
+                    white_sum = white_sum + 1
+            if (white_sum>90):
+                piece_y_max = max(i, piece_y_max)
+                break;
+
+        choices_im = image.crop((75, question_end, 1000, piece_y_max))
+
+        answer_height = 150
+
     # question = image.crop((75, 315, 1167, 789)) # iPhone 7P
-
+    question_im.save('question.jpg');
+    choices_im.save('choices.jpg');
     # 边缘增强滤波,不一定适用
     #question_im = question_im.filter(ImageFilter.EDGE_ENHANCE)
     #choices_im = choices_im.filter(ImageFilter.EDGE_ENHANCE)
@@ -117,9 +210,9 @@ def ocr_img(image):
             break
     i=0
     while (len(choices)>3):
-        choices.pop()        
+        choices.pop()      
 
-    return question, choices
+    return question, choices, question_end
 
 
 if __name__ == '__main__':
