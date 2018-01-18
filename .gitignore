@@ -5,3 +5,5 @@ test.py
 *.py[cod]
 common/__pycache__
 GetQuestionApi.py
+dist/
+build/
