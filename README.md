@@ -1,12 +1,12 @@
 
 # 答题辅助
-这两天冲顶大会之类的直播答题 APP 突然火了起来，萌生了使用截图，文字识别，搜索来做个小辅助的想法。
+这两天冲顶大会之类的直播答题 APP 突然火了起来，萌生了使用截图，文字识别，搜索来玩答题的想法。
 
-因为时间、搜索结果等原因，使用文字识别搜索，能提供的辅助作用有限。
+因为时间、搜索结果等限制，使用文字识别搜索，能提供的辅助作用有限。
 
 
 
-**非常感谢关注，欢迎大家PR新的想法和优化。**
+**非常感谢关注，欢迎大家 PR 更多有趣的想法和优化。**
 
 ![](/resources/screenshot.png)
 
@@ -112,7 +112,7 @@ pip install pytesseract
 pip install pillow  
 pip install requests
 pip install colorama
-
+pip install baidu-aip
 ```
 #### 4. 安装 谷歌 Tesseract
 
@@ -171,7 +171,21 @@ tessdata_dir_config = --tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\te
 
 1. 在[百度平台](https://cloud.baidu.com/product/ocr)上创建应用申请 API Key 和 Secret Key
 
-2. ` pip install baidu-aip`
+2. 安装所需 python 包
+
+   命令行：
+
+   `pip install -r requirements.txt`
+
+   或者
+
+       pip install pytesseract
+       pip install pillow  
+       pip install requests
+       pip install colorama
+       pip install baidu-aip
+
+   ​
 
 3. 在 `config/configure.conf` 中加入相应 key, 并设置截取区域
 
@@ -203,7 +217,6 @@ tessdata_dir_config = --tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\te
 
    安卓： `python GetQuestionAndroid.py`
 
-   Ios：`python GetQuestionIos.py`
 
 
 ## 其它
@@ -225,7 +238,7 @@ tessdata_dir_config = --tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\te
 
 ## 总结
 
-有了 ADB 截图，怕是各种小辅助都可以玩了。python 写小脚本真的很方便。
+有了 ADB 截图，能玩出更多花样。python 写小脚本真的很方便。
 
 ## Next
 
