@@ -8,19 +8,30 @@ import wda
 from PIL import Image
 from common import  ocr, methods
 
+# 读取配置文件
+config = configparser.ConfigParser()
+config.read('./config/configure.conf', encoding='utf-8')
+
 
 c = wda.Client()
 
 
 while True:
-
+    t = time.clock()
     # 截图
     c.screenshot('screenshot.png')
 
     img = Image.open("./screenshot.png")
 
-    # 文字识别
-    question, choices = ocr.ocr_img(img)
+    # 文字识别,可选 Tesseract 和 Baidu ,请在 config/configure.conf 中进行相应配置
+
+    # ocr_img: 需要分别截取题目和选项区域，使用 Tesseract
+    # ocr_img_tess： 题目和选项一起截，使用 Tesseract
+    # ocr_img_baidu： 题目和选项一起截，使用 baidu ocr，需配置 key
+
+    # question, choices = ocr.ocr_img(img, config)
+    question, choices = ocr.ocr_img_tess(img, config)
+    # question, choices = ocr.ocr_img_baidu(img, config)
 
     # 用不同方法输出结果，取消某个方法在前面加上#
 
@@ -30,6 +41,9 @@ while True:
     methods.run_algorithm(1, question, choices)
     # 用选项在问题页面中计数出现词频方法
     methods.run_algorithm(2, question, choices)
+
+    end_time3 = time.clock()
+    print('用时: {0}'.format(end_time3 - t))
 
     go = input('输入回车继续运行,输入 n 回车结束运行: ')
     if go == 'n':

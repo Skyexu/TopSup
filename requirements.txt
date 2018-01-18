@@ -3,4 +3,4 @@ matplotlib==2.0.2
 Pillow==4.1.1
 colorama==0.3.9
 pytesseract==0.1.7
-baidu-aip
+baidu-aip==2.1.0.0

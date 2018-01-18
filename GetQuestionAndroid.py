@@ -26,7 +26,7 @@ while True:
 
     img = Image.open("./screenshot.png")
 
-    # 文字识别,可选 Tesseract 和 Baidu ,请在 orc.py 中进行相应配置
+    # 文字识别,可选 Tesseract 和 Baidu ,请在 config/configure.conf 中进行相应配置
 
     #ocr_img: 需要分别截取题目和选项区域，使用 Tesseract
     #ocr_img_tess： 题目和选项一起截，使用 Tesseract

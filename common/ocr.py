@@ -47,10 +47,10 @@ def depoint(img):   #input: gray image
 
 def ocr_img(image, config):
 
-    question_region = config.get("region", "question_region").split(',')
+    question_region = config.get("region", "question_region").replace(' ','').split(',')
     question_region = list(map(int, question_region))
 
-    choices_region = config.get("region", "choices_region").split(',')
+    choices_region = config.get("region", "choices_region").replace(' ','').split(',')
     choices_region = list(map(int, choices_region))
 
     question_im = image.crop((question_region[0], question_region[1], question_region[2], question_region[3])) # 坚果 pro1
@@ -113,7 +113,7 @@ def ocr_img(image, config):
 def ocr_img_tess(image, config):
     """只运行一次 Tesseract"""
 
-    combine_region = config.get("region", "combine_region").split(',')
+    combine_region = config.get("region", "combine_region").replace(' ','').split(',')
     combine_region = list(map(int, combine_region))
 
     # 切割题目+选项区域，左上角坐标和右下角坐标,自行测试分辨率
@@ -170,7 +170,7 @@ def ocr_img_baidu(image, config):
 
     global combine_region
     # 切割题目+选项区域，左上角坐标和右下角坐标,自行测试分辨率
-    combine_region = config.get("region", "combine_region").split(',')
+    combine_region = config.get("region", "combine_region").replace(' ','').split(',')
     combine_region = list(map(int, combine_region))
     region_im = image.crop((combine_region[0], combine_region[1], combine_region[2], combine_region[3]))
     # 转化为灰度图
