@@ -153,7 +153,7 @@ tessdata_dir_config = --tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\te
 
 #### 6. 运行脚本
 
-`python GetQuestionTessAndroid.py`
+`python GetQuestionAndroid.py`
 会自动识别文字并打开浏览器
 
 ### IOS
@@ -165,7 +165,7 @@ tessdata_dir_config = --tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\te
   -  [Android 和 iOS 操作步骤](https://github.com/wangshub/wechat_jump_game/wiki/Android-%E5%92%8C-iOS-%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4)
 - 安装 [python-wda](https://github.com/openatx/facebook-wda)
 - 其他步骤相同。
-- `python GetQuestionTessIos.py`
+- `python GetQuestionIos.py`
 
 ## 使用步骤 (百度 OCR)
 
@@ -197,9 +197,13 @@ tessdata_dir_config = --tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\te
   question, choices = ocr.ocr_img_baidu(img, config)
   ```
 
-5. 运行脚本 
+5. 其它环境配置与 Tesseract 步骤相同
+
+6. 运行脚本 
 
    安卓： `python GetQuestionAndroid.py`
+
+   Ios：`python GetQuestionIos.py`
 
 
 ## 其它
