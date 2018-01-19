@@ -4,12 +4,17 @@
 # @Time    : 2018/1/8 20:38
 # @desc    : 答题闯关辅助，截屏 ，OCR 识别，百度搜索
 
+try:
+    from configparser import ConfigParser  # Python 3
+except ImportError:
+    from ConfigParser import ConfigParser  # Python 2
+import time
 import wda
 from PIL import Image
 from common import  ocr, methods
 
 # 读取配置文件
-config = configparser.ConfigParser()
+config = ConfigParser()
 config.read('./config/configure.conf', encoding='utf-8')
 
 
