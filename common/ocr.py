@@ -40,9 +40,51 @@ def depoint(img):   #input: gray image
                 pixdata[x,y] = 255
     return img
 
-def ocr_img(image):
+global os
+os = 'cd'
 
-    # 切割题目和选项位置，左上角坐标和右下角坐标,自行测试分辨率
+def get_question(image, question_end):
+    global os
+
+    w,h = image.size
+    #支持平板 
+    if (w>h):
+        image = image.transpose(Image.ROTATE_270) 
+        temp = w
+        w = h
+        h = temp
+
+    im_pixel = image.load()
+
+    if (os=='zs'):
+        #芝士超人
+        answer_height = 100
+    elif (os=='hj' or os =='cd'):
+        #花椒直播
+        # 冲顶大会
+        answer_height = 150
+
+    # 自动识别答案位置
+    piece_y_max = question_end
+    scan_x_border = 75
+    scan_start_y =  piece_y_max
+    for i in range(scan_start_y, h):
+        if (piece_y_max != question_end):
+            break
+        for j in range(scan_x_border, scan_x_border+100):
+            pixel = im_pixel[j, i]
+            if (abs(pixel[1]-pixel[0])>50 or abs(pixel[1]-pixel[2])>50):
+                piece_y_max = max(i, piece_y_max)
+                break
+    print(question_end)
+    print(piece_y_max)
+    print(answer_height)
+    return round((piece_y_max-question_end)/answer_height)
+
+
+def ocr_img(image):
+    global os
+
     w,h = image.size
     #读取图像 
 
@@ -54,8 +96,8 @@ def ocr_img(image):
         h = temp
 
     im_pixel = image.load()
-    os = 'hj';
 
+    print(os)
     if (os=='zs'):
         #芝士超人
         # 自动识别问题开始
@@ -72,20 +114,27 @@ def ocr_img(image):
                 question_start = max(i, question_start)
                 break;
 
+
         # 自动识别问题结束
         scan_x_border = int(w / 4)
         scan_start_y = question_start 
-        question_end = 200
+        question_end = question_start
         for i in range(scan_start_y, h):
             white_sum=0
             for j in range(scan_x_border-50, scan_x_border+50):
                 pixel = im_pixel[j, i]
-                if (pixel[0]==196 and pixel[1]==196 and pixel[2]==196):
+                if (abs(200-pixel[0])<10 and (200-pixel[1])<10 and (200-pixel[2])<10):
                     white_sum = white_sum + 1
+
             if (white_sum==100):
                 question_end = max(i, question_end)
                 break;
 
+        if(question_start == question_end):
+            return '', [], 0
+
+        print(question_start)
+        print(question_end)
         question_im = image.crop((50, question_start, 1000, question_end)) 
 
         # 自动识别题板高度
@@ -122,6 +171,7 @@ def ocr_img(image):
                 question_start = max(i, question_start)
                 break;
 
+
         # 自动识别问题结束
         scan_x_border = int(w / 2)
         scan_start_y = question_start 
@@ -135,6 +185,62 @@ def ocr_img(image):
             if (white_sum==100):
                 question_end = max(i, question_end)
                 break;
+
+        if(question_start == question_end):
+            return '', [], 0
+
+        question_im = image.crop((50, question_start, 1000, question_end)) 
+
+        # 自动识别题板高度
+        piece_y_max = question_end
+        scan_x_border = int(w / 2)
+        for i in range(question_end, h):
+            white_sum=0
+            for j in range(scan_x_border-50, scan_x_border+50):
+                pixel = im_pixel[j, i]
+                if (pixel[0]<100 and pixel[1]<100 and pixel[2]<100):
+                    white_sum = white_sum + 1
+            if (white_sum>90):
+                piece_y_max = max(i, piece_y_max)
+                break;
+
+        choices_im = image.crop((75, question_end, 1000, piece_y_max))
+
+        answer_height = 150
+
+    if (os=='cd'):
+        # 冲顶大会
+        # 自动识别问题开始
+        scan_x_border = int(w / 2)
+        scan_start_y = 320 
+        question_start = 320
+        for i in range(scan_start_y, h):
+            white_sum=0
+            for j in range(scan_x_border-50, scan_x_border+50):
+                pixel = im_pixel[j, i]
+                if ((255-pixel[0])<10 and (255-pixel[1])<10 and (255-pixel[2])<10):
+                    white_sum = white_sum + 1
+            if (white_sum!=100):
+                question_start = max(i, question_start)
+                break;
+
+
+        # 自动识别问题结束
+        scan_x_border = int(w / 2)
+        scan_start_y = question_start 
+        question_end = question_start
+        for i in range(scan_start_y, h):
+            white_sum=0
+            for j in range(scan_x_border-50, scan_x_border+50):
+                pixel = im_pixel[j, i]
+                if (abs(200-pixel[0])<5 and abs(200-pixel[1])<5 and abs(200-pixel[2])<5):
+                    white_sum = white_sum + 1
+            if (white_sum==100):
+                question_end = max(i, question_end)
+                break;
+
+        if(question_start == question_end):
+            return '', [], 0
 
         question_im = image.crop((50, question_start, 1000, question_end)) 
 

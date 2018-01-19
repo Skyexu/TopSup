@@ -22,10 +22,10 @@ class JSONObject:
         self.__dict__ = d
 
 def open_webbrowser(question):
-    print("Cancel")
+    # print("Cancel")
     # webbrowser.open('https://www.google.co.uk/search?q=' + urllib.parse.quote(question))
     # webbrowser.open('https://www.sogou.com/web?query=' + urllib.parse.quote(question))
-    # webbrowser.open('https://www.baidu.com/s?wd=' + urllib.parse.quote(question))
+    webbrowser.open('https://www.baidu.com/s?wd=' + urllib.parse.quote(question))
 
 def cloud_count(question, q):
     print('\n-- 方法1： 题库筛选 --\n')
@@ -44,9 +44,11 @@ def open_webbrowser_count(question,choices,q):
     print('\n-- 方法2： 题目+选项搜索结果计数法 --\n')
     # q.put('\n-- 方法2： 题目+选项搜索结果计数法 --\n')
     print('Question: ' + question)
-    if '不是' in question:
+    if ('不' in question or '错误' in question):
         getMax = False
         print('**请注意此题为否定题,选计数最少的**')
+    else:
+        getMax = True
 
     counts = []
     for i in range(len(choices)):
@@ -71,9 +73,12 @@ def count_base(question,choices,q):
     #print(content)
     counts = []
     print('Question: '+question)
-    if '不是' in question:
+    if ('不' in question or '错误' in question):
         print('**请注意此题为否定题,选计数最少的**')
         getMax = False
+    else:
+        getMax = True
+
     for i in range(len(choices)):
         counts.append(content.count(choices[i]))
         #print(choices[i] + " : " + str(counts[i]))

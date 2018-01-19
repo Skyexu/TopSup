@@ -18,9 +18,27 @@ import sys
 import os
 
 global GUI
+global AUTO
+global current_question
+current_question = ''
+global answers
+answers = []
+global current_answer
+current_answer = ''
+global current_bigData
+current_bigData = 0
+
 global running
 running = True
+
+global status
+status = 'waiting'
+
+global touch_start
+
+
 GUI = False
+AUTO = True
 argv = sys.argv;
 if (len(argv)>1 and argv[1]=='gui'):
     GUI = True;
@@ -29,18 +47,65 @@ if GUI:
     top = tk.Tk()
     top.geometry(str(int(GetSystemMetrics(0)/2))+'x'+str(int(GetSystemMetrics(1)/2)))
 
+global count
+count = 0
+
 def hit_me():
     global GUI
     global running
     global touch_start
     global save_choices
+    global AUTO
+    global current_question
+    global answers
+    global current_answer
+    global current_bigData
+    global status
+    global count
+
+    count = count + 1
+
     # 截图
-    # screenshot.check_screenshot()
+    screenshot.check_screenshot()
 
     img = Image.open("./screenshot.png")
 
     # 文字识别
     question, choices, selection_start = ocr.ocr_img(img)
+
+    print(status)
+    print(count)
+
+    if (question=='' and len(choices)==0 and selection_start==0):
+        status = 'waiting'
+        print('未检测到题板')
+        count = count - 1
+        return hit_me()
+    #     if running:
+    #         return hit_me()
+
+    if (question == current_question or (question in current_question)):
+        if (status != 'waiting'):
+            print('此题已答过')
+            count = count - 1
+            return hit_me()
+    #         if running:
+    #             return hit_me()
+        current_answer = ocr.get_question(img, touch_start)
+        print('正确答案为：'+answers[current_answer])
+        req = requests.get(url='http://localhost:3000/add', params={'question': current_question, 'answer': answers[current_answer], 'bigdata':answers[current_bigData]})
+        print(req)
+        return hit_me()
+
+    #     if running:
+    #         return hit_me()
+
+    status = 'answered'
+
+
+    current_question = question
+    answers = choices
+
     touch_start = selection_start
     save_choices = choices
 
@@ -95,44 +160,56 @@ def hit_me():
         global paramsAnswer
         global results
         global save_choices
+        global status
+
         while True:
             data = in_q.get()
             if (data == 'END'):
                 sum = sum + 1
             else:
-                if GUI:
-                    results[data['name']]=data['value'];
+                results[data['name']]=data['value']
             if (sum>2):
                 break
-        if (results['cloud_count']!=''):
-            paramsAnswer = results['cloud_count']
-        elif (results['count_base']!=''):
-            paramsAnswer = results['count_base']
-        elif (results['open_webbrowser_count']!=''):
-            paramsAnswer = results['open_webbrowser_count']
-        else:
-            paramsAnswer = '自求多福'
+
+        if (sum>2):
+            print(results)
+            # if (results['cloud_count']!=''):
+            #     paramsAnswer = results['cloud_count']
+            if (results['count_base']!=''):
+                paramsAnswer = results['count_base']
+            elif (results['open_webbrowser_count']!=''):
+                paramsAnswer = results['open_webbrowser_count']
+            else:
+                paramsAnswer = '自求多福'
 
 
-        selection = 0
-        for index, item in enumerate(save_choices):
-            if item==paramsAnswer:
-                selection = index
-                break
+            selection = 0
+            for index, item in enumerate(save_choices):
+                if item==paramsAnswer:
+                    selection = index
+                    break
 
-        selection_height = 170;
+            if  (paramsAnswer=='自求多福'):
+                selection = random.choice([0,1,2]);
 
-        if GUI:
-            var.set(var.get() + '\n\n正确答案\n\n' +paramsAnswer)
-            # 模拟点按
+            selection_height = 170;
 
-        os.system('adb shell input tap 250 ' + str(touch_start+(selection+1)*selection_height/2))
+            if GUI:
+                var.set(var.get() + '\n\n正确答案\n\n' +paramsAnswer)
+                # 模拟点按
 
-        req = requests.get(url='http://localhost:3000/add', params={'question': paramsQuestion, 'answer': paramsAnswer})
+            current_bigData = selection
+            print('\n我要选'+paramsAnswer)
+            os.system('adb shell input tap 250 ' + str(touch_start+(selection+0.5)*selection_height))
+            # if running:
+            #     hit_me()
+            hit_me()
 
     t = Thread(target=consumer, args=(q,))
-    t.start()
-    if (GUI==False):
+
+    if (count==1):
+        t.start()
+    if (GUI==False and AUTO==False):
         go = input('输入回车继续运行,输入 n 回车结束运行: ')
         if go == 'n':
             running = False
@@ -155,5 +232,3 @@ if GUI:
 else:
     while running:
         hit_me()
-
-
