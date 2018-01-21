@@ -41,7 +41,7 @@ def depoint(img):   #input: gray image
     return img
 
 global os
-os = 'cd'
+os = 'hj'
 
 def get_question(image, question_end):
     global os
@@ -123,7 +123,7 @@ def ocr_img(image):
             white_sum=0
             for j in range(scan_x_border-50, scan_x_border+50):
                 pixel = im_pixel[j, i]
-                if (abs(200-pixel[0])<10 and (200-pixel[1])<10 and (200-pixel[2])<10):
+                if (abs(200-pixel[0])<50 and (200-pixel[1])<50 and (200-pixel[2])<50):
                     white_sum = white_sum + 1
 
             if (white_sum==100):
@@ -180,7 +180,7 @@ def ocr_img(image):
             white_sum=0
             for j in range(scan_x_border-50, scan_x_border+50):
                 pixel = im_pixel[j, i]
-                if (abs(220-pixel[0])<5 and abs(220-pixel[1])<5 and abs(220-pixel[2])<5):
+                if (abs(220-pixel[0])<20 and abs(220-pixel[1])<20 and abs(220-pixel[2])<20 ):
                     white_sum = white_sum + 1
             if (white_sum==100):
                 question_end = max(i, question_end)
@@ -212,8 +212,8 @@ def ocr_img(image):
         # 冲顶大会
         # 自动识别问题开始
         scan_x_border = int(w / 2)
-        scan_start_y = 320 
-        question_start = 320
+        scan_start_y = 100 
+        question_start = 100
         for i in range(scan_start_y, h):
             white_sum=0
             for j in range(scan_x_border-50, scan_x_border+50):
@@ -233,7 +233,7 @@ def ocr_img(image):
             white_sum=0
             for j in range(scan_x_border-50, scan_x_border+50):
                 pixel = im_pixel[j, i]
-                if (abs(200-pixel[0])<5 and abs(200-pixel[1])<5 and abs(200-pixel[2])<5):
+                if (abs(200-pixel[0])<10 and abs(200-pixel[1])<10 and abs(200-pixel[2])<10):
                     white_sum = white_sum + 1
             if (white_sum==100):
                 question_end = max(i, question_end)
@@ -298,8 +298,10 @@ def ocr_img(image):
     choice = pytesseract.image_to_string(choices_im, lang='chi_sim', config=tessdata_dir_config)
     # 处理将"一"识别为"_"的问题
     choices = choice.strip().replace("_", "一").split("\n")
-    choices = [ x for x in choices if x != '' ]
 
+    print(choices)
+    choices = [ x for x in choices if x != '' ]
+    print(choices)
     # 兼容问题为多行
     question_length = 0
     for i in range(len(choices)):
@@ -318,6 +320,7 @@ def ocr_img(image):
     while (len(choices)>3):
         choices.pop()      
 
+    print(choices)
     return question, choices, question_end
 
 

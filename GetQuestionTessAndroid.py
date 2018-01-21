@@ -16,6 +16,7 @@ import requests
 import time
 import sys
 import os
+import random
 
 global GUI
 global AUTO
@@ -35,6 +36,8 @@ global status
 status = 'waiting'
 
 global touch_start
+from colorama import init,Fore
+init()
 
 
 GUI = False
@@ -62,8 +65,10 @@ def hit_me():
     global current_bigData
     global status
     global count
+    global getMax
+    getMax=False
 
-    count = count + 1
+    token = '88QUg$!pmf!TAY5r';
 
     # 截图
     screenshot.check_screenshot()
@@ -76,10 +81,14 @@ def hit_me():
     print(status)
     print(count)
 
-    if (question=='' and len(choices)==0 and selection_start==0):
+    if (count > 100):
+        print('退出')
+        return
+
+    if (question=='' or len(choices)==0 or selection_start==0):
         status = 'waiting'
         print('未检测到题板')
-        count = count - 1
+        count = count + 1
         return hit_me()
     #     if running:
     #         return hit_me()
@@ -87,21 +96,23 @@ def hit_me():
     if (question == current_question or (question in current_question)):
         if (status != 'waiting'):
             print('此题已答过')
-            count = count - 1
             return hit_me()
     #         if running:
     #             return hit_me()
-        current_answer = ocr.get_question(img, touch_start)
-        print('正确答案为：'+answers[current_answer])
-        req = requests.get(url='http://localhost:3000/add', params={'question': current_question, 'answer': answers[current_answer], 'bigdata':answers[current_bigData]})
-        print(req)
-        return hit_me()
+        # current_answer = ocr.get_question(img, touch_start)
+        # print('正确答案为：'+answers[current_answer])
+        # req = requests.get(url='http://localhost:3000/add', params={'question': current_question, 'answer': answers[current_answer], 'bigdata':answers[current_bigData]})
+        # print(req)
+        # req   = requests.get(url='http://localhost:3000/', params={'right': current_answer, 'token':token})
+        # print(req.text)
+        # return hit_me()
 
     #     if running:
     #         return hit_me()
-
+    count = 0
     status = 'answered'
-
+    req   = requests.get(url='http://hj.chenzhicheng.com/', params={'question': question, 'answer': choices, 'token':token})
+    print(req.text)
 
     current_question = question
     answers = choices
@@ -125,7 +136,88 @@ def hit_me():
     # # 将问题与选项一起搜索方法，并获取搜索到的结果数目
     # methods.run_algorithm(1, question, choices)
     # # 用选项在问题页面中计数出现词频方法
-    # methods.run_algorithm(2, question, choices)
+    # methods.run_algorithm(2, question, choices, q)
+
+    def count_base(question,choices):
+        global getMax
+        print('\n-- 方法3： 题目搜索结果包含选项词频计数法 --\n')
+        # q.put('\n-- 方法3： 题目搜索结果包含选项词频计数法 --\n')
+        # 请求
+        req = requests.get(url='http://www.baidu.com/s', params={'wd':question})
+        content = req.text
+        #print(content)
+        counts = []
+        print('Question: '+question)
+        if ('不' in question or '错误' in question):
+            print('**请注意此题为否定题,选计数最少的**')
+            getMax = False
+        else:
+            getMax = True
+
+        for i in range(len(choices)):
+            counts.append(content.count(choices[i]))
+            #print(choices[i] + " : " + str(counts[i]))
+        return output(choices, counts,'count_base')
+
+    def output(choices, counts, al_num):
+        global getMax
+        if (len(counts)==0):
+            return random.choice([0,1,2]);
+        counts = list(map(int, counts))
+        #print(choices, counts)
+
+        # 计数最高
+        index_max = counts.index(max(counts))
+
+        # 计数最少
+        index_min = counts.index(min(counts))
+
+        if index_max == index_min:
+            print(Fore.RED + "高低计数相等此方法失效！" + Fore.RESET)
+            return random.choice([0,1,2]);
+
+        result = 0;
+        for i in range(len(choices)):
+            if i == index_max:
+                # 绿色为计数最高的答案
+                print(Fore.GREEN + "{0} : {1} ".format(choices[i], counts[i]) + Fore.RESET)
+                if getMax:
+                    result=i
+
+            elif i == index_min:
+                # 红色为计数最低的答案
+                print(Fore.MAGENTA + "{0} : {1}".format(choices[i], counts[i]) + Fore.RESET)
+                if (getMax==False):
+                    result=i
+
+            else:
+                print("{0} : {1}".format(choices[i], counts[i]))
+                # q.put(' '+str(choices[i]) + ':' + str(counts[i]) + '\n')
+        return result
+
+    selection = count_base(question, choices)
+
+    print(choices)
+    print('\n我要选'+choices[selection])
+    platform='hj'
+    if (platform=='zs'):
+        #芝士超人
+        answer_height = 100
+    elif (platform=='hj' or platform =='cd'):
+        #花椒直播
+        # 冲顶大会
+        answer_height = 150
+
+    print(touch_start+(selection+0.5)*answer_height)
+    os.system('adb shell input tap 250 ' + str(touch_start+(selection+0.5)*answer_height))
+    # if running:
+    #     hit_me()
+    req   = requests.get(url='http://hj.chenzhicheng.com/', params={'advise': selection, 'token':token})
+    print('休息20s')
+    time.sleep(20)
+    print('休息结束')
+    print(req.text)
+    return hit_me()
 
     # 多线程
     q = Queue()
@@ -203,6 +295,9 @@ def hit_me():
             os.system('adb shell input tap 250 ' + str(touch_start+(selection+0.5)*selection_height))
             # if running:
             #     hit_me()
+            print('休息5s')
+            time.sleep(5)
+            print('休息结束')
             hit_me()
 
     t = Thread(target=consumer, args=(q,))
