@@ -99,13 +99,13 @@ def hit_me():
             return hit_me()
     #         if running:
     #             return hit_me()
-        # current_answer = ocr.get_question(img, touch_start)
-        # print('正确答案为：'+answers[current_answer])
+        current_answer = ocr.get_question(img, touch_start)
+        print('正确答案为：'+answers[current_answer])
         # req = requests.get(url='http://localhost:3000/add', params={'question': current_question, 'answer': answers[current_answer], 'bigdata':answers[current_bigData]})
         # print(req)
-        # req   = requests.get(url='http://localhost:3000/', params={'right': current_answer, 'token':token})
-        # print(req.text)
-        # return hit_me()
+        req   = requests.get(url='http://hj.chenzhicheng.com/', params={'right': current_answer, 'token':token})
+        print(req.text)
+        return hit_me()
 
     #     if running:
     #         return hit_me()
@@ -199,7 +199,7 @@ def hit_me():
 
     print(choices)
     print('\n我要选'+choices[selection])
-    platform='hj'
+    platform='cd'
     if (platform=='zs'):
         #芝士超人
         answer_height = 100
@@ -213,8 +213,8 @@ def hit_me():
     # if running:
     #     hit_me()
     req   = requests.get(url='http://hj.chenzhicheng.com/', params={'advise': selection, 'token':token})
-    print('休息20s')
-    time.sleep(20)
+    print('休息5s')
+    time.sleep(5)
     print('休息结束')
     print(req.text)
     return hit_me()

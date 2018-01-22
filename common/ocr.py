@@ -41,7 +41,7 @@ def depoint(img):   #input: gray image
     return img
 
 global os
-os = 'hj'
+os = 'cd'
 
 def get_question(image, question_end):
     global os
@@ -239,9 +239,6 @@ def ocr_img(image):
                 question_end = max(i, question_end)
                 break;
 
-        if(question_start == question_end):
-            return '', [], 0
-
         question_im = image.crop((50, question_start, 1000, question_end)) 
 
         # 自动识别题板高度
@@ -253,7 +250,7 @@ def ocr_img(image):
                 pixel = im_pixel[j, i]
                 if (pixel[0]<100 and pixel[1]<100 and pixel[2]<100):
                     white_sum = white_sum + 1
-            if (white_sum>90):
+            if (white_sum>10):
                 piece_y_max = max(i, piece_y_max)
                 break;
 
@@ -261,6 +258,11 @@ def ocr_img(image):
 
         answer_height = 150
 
+    if(question_start == question_end or question_end == piece_y_max):
+        return '', [], 0
+
+    print(question_end)
+    print(piece_y_max)
     # question = image.crop((75, 315, 1167, 789)) # iPhone 7P
     question_im.save('question.jpg');
     choices_im.save('choices.jpg');
