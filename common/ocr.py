@@ -41,13 +41,13 @@ def depoint(img):   #input: gray image
     return img
 
 global os
-os = 'cd'
 
-def get_question(image, question_end):
+def get_question(image, question_end, platform):
     global os
+    os = platform
 
     w,h = image.size
-    #支持平板 
+    # 支持平板 
     if (w>h):
         image = image.transpose(Image.ROTATE_270) 
         temp = w
@@ -57,10 +57,10 @@ def get_question(image, question_end):
     im_pixel = image.load()
 
     if (os=='zs'):
-        #芝士超人
+        # 芝士超人
         answer_height = 100
     elif (os=='hj' or os =='cd'):
-        #花椒直播
+        # 花椒直播
         # 冲顶大会
         answer_height = 150
 
@@ -76,14 +76,12 @@ def get_question(image, question_end):
             if (abs(pixel[1]-pixel[0])>50 or abs(pixel[1]-pixel[2])>50):
                 piece_y_max = max(i, piece_y_max)
                 break
-    print(question_end)
-    print(piece_y_max)
-    print(answer_height)
     return round((piece_y_max-question_end)/answer_height)
 
 
-def ocr_img(image):
+def ocr_img(image, platform):
     global os
+    os = platform
 
     w,h = image.size
     #读取图像 
@@ -97,7 +95,6 @@ def ocr_img(image):
 
     im_pixel = image.load()
 
-    print(os)
     if (os=='zs'):
         #芝士超人
         # 自动识别问题开始
@@ -110,7 +107,7 @@ def ocr_img(image):
                 pixel = im_pixel[j, i]
                 if (pixel[1]==255 and pixel[1]==255 and pixel[2]==255):
                     white_sum = white_sum + 1
-            if (white_sum!=100):
+            if (white_sum<90):
                 question_start = max(i, question_start)
                 break;
 
@@ -130,11 +127,9 @@ def ocr_img(image):
                 question_end = max(i, question_end)
                 break;
 
-        if(question_start == question_end):
+        if((question_end - question_start)<10):
             return '', [], 0
 
-        print(question_start)
-        print(question_end)
         question_im = image.crop((50, question_start, 1000, question_end)) 
 
         # 自动识别题板高度
@@ -159,15 +154,15 @@ def ocr_img(image):
         # 自动识别问题开始
 
         scan_x_border = int(w / 2)
-        scan_start_y = 300 
-        question_start = 300
+        scan_start_y =500 
+        question_start = 500
         for i in range(scan_start_y, h):
             white_sum=0
             for j in range(scan_x_border-50, scan_x_border+50):
                 pixel = im_pixel[j, i]
                 if ((255-pixel[0])<10 and (255-pixel[1])<10 and (255-pixel[2])<10):
                     white_sum = white_sum + 1
-            if (white_sum!=100):
+            if (white_sum<90):
                 question_start = max(i, question_start)
                 break;
 
@@ -180,13 +175,13 @@ def ocr_img(image):
             white_sum=0
             for j in range(scan_x_border-50, scan_x_border+50):
                 pixel = im_pixel[j, i]
-                if (abs(220-pixel[0])<20 and abs(220-pixel[1])<20 and abs(220-pixel[2])<20 ):
+                if (abs(220-pixel[0])<20 or abs(220-pixel[1])<20 or abs(220-pixel[2])<20 ):
                     white_sum = white_sum + 1
-            if (white_sum==100):
+            if (white_sum>90):
                 question_end = max(i, question_end)
                 break;
 
-        if(question_start == question_end):
+        if((question_end - question_start)<10):
             return '', [], 0
 
         question_im = image.crop((50, question_start, 1000, question_end)) 
@@ -258,11 +253,15 @@ def ocr_img(image):
 
         answer_height = 150
 
-    if(question_start == question_end or question_end == piece_y_max):
-        return '', [], 0
+    if (os!='auto'):
+        if(question_start == question_end or question_end == piece_y_max):
+            return '', [], 0
 
-    print(question_end)
-    print(piece_y_max)
+    if (os=='auto'):
+        question_im = image.crop((50, 350, 1000, 560)) # 坚果 pro1
+        choices_im = image.crop((75, 535, 990, 1150))
+        question_end = -1
+
     # question = image.crop((75, 315, 1167, 789)) # iPhone 7P
     question_im.save('question.jpg');
     choices_im.save('choices.jpg');
@@ -301,9 +300,7 @@ def ocr_img(image):
     # 处理将"一"识别为"_"的问题
     choices = choice.strip().replace("_", "一").split("\n")
 
-    print(choices)
     choices = [ x for x in choices if x != '' ]
-    print(choices)
     # 兼容问题为多行
     question_length = 0
     for i in range(len(choices)):
@@ -322,7 +319,6 @@ def ocr_img(image):
     while (len(choices)>3):
         choices.pop()      
 
-    print(choices)
     return question, choices, question_end
 
 
