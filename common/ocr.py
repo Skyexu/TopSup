@@ -173,6 +173,7 @@ def ocr_img_baidu(image, config):
     combine_region = config.get("region", "combine_region").replace(' ','').split(',')
     combine_region = list(map(int, combine_region))
     region_im = image.crop((combine_region[0], combine_region[1], combine_region[2], combine_region[3]))
+    # region_im.show()
     # 转化为灰度图
     #region_im = region_im.convert('L')
 
@@ -195,7 +196,8 @@ def ocr_img_baidu(image, config):
         choices = [x.replace(' ', '') for x in choices]
     else:
         print(Fore.RED + '截图区域设置错误，请重新设置' + Fore.RESET)
-        exit(0)
+        return ('','')
+    #     exit(0)
 
     # 处理出现问题为两行或三行
     if choices[0].endswith('?'):

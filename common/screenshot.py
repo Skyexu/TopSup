@@ -6,6 +6,11 @@ import subprocess
 import os
 import sys
 from PIL import Image
+import configparser
+
+# 读取配置文件
+config = configparser.ConfigParser()
+config.read('./config/configure.conf', encoding='utf-8')
 
 
 # SCREENSHOT_WAY 是截图方法，经过 check_screenshot 后，会自动递减，不需手动修改
@@ -18,24 +23,40 @@ def pull_screenshot():
     可根据效率及适用性由高到低排序
     """
     global SCREENSHOT_WAY
+
+    # 兼容多个adb设备的情况
+    device_cmd = ''
+    try:
+        devices = os.popen('adb devices').readlines()[1:-1]
+        devices_count = len(devices)
+        if devices_count > 1:
+            adb_device = config.get('device', 'adb_device')
+            device_cmd = ' -s ' + adb_device
+        elif devices_count == 0:
+            print('当前暂无已连接的adb设备')
+            exit(0)
+    except Exception:
+        pass
+
     if 1 <= SCREENSHOT_WAY <= 3:
         process = subprocess.Popen(
-            'adb shell screencap -p',
+            'adb' + device_cmd + ' shell screencap -p',
             shell=True, stdout=subprocess.PIPE)
         binary_screenshot = process.stdout.read()
         if SCREENSHOT_WAY == 2:
             binary_screenshot = binary_screenshot.replace(b'\r\n', b'\n')
             # binary_screenshot = binary_screenshot.split(b' ')
             # binary_screenshot = binary_screenshot[len(binary_screenshot) - 1]
-            #print(binary_screenshot)
+            # print(binary_screenshot)
         elif SCREENSHOT_WAY == 1:
             binary_screenshot = binary_screenshot.replace(b'\r\r\n', b'\n')
         f = open('screenshot.png', 'wb')
         f.write(binary_screenshot)
         f.close()
     elif SCREENSHOT_WAY == 0:
-        os.system('adb shell screencap -p /sdcard/screenshot.png')
-        os.system('adb pull /sdcard/screenshot.png .')
+        os.system('adb' + device_cmd +
+                  ' shell screencap -p /sdcard/screenshot.png')
+        os.system('adb' + device_cmd + ' pull /sdcard/screenshot.png .')
 
 
 def check_screenshot():
