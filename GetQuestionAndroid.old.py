@@ -3,11 +3,11 @@
 # @Author  : Skye
 # @Time    : 2018/1/8 20:38
 # @desc    : 答题闯关辅助，截屏 ，OCR 识别，百度搜索
-import io
+
+
 from PIL import Image
 from common import screenshot, ocr, methods
 from threading import Thread
-import traceback
 import time
 import configparser
 
@@ -15,25 +15,30 @@ import configparser
 config = configparser.ConfigParser()
 config.read('./config/configure.conf', encoding='utf-8')
 
+
 while True:
-
-    
-    t = time.clock()    
     # 截图
-    bScreenshot = screenshot.check_screenshot()
-    # bScreenshot.save(io.BytesIO(),'PNG')
-    # bScreenshot.seek(0)
-    # bScreenImg = bScreenshot.read()
-    try:
-        image_file = io.BytesIO(bScreenshot)
-        img = Image.open(image_file)
-        # 文字识别
-        question, choices = ocr.ocr_img_baidu(img, config)
-    except Exception:
-        print('识别失败', traceback.format_exc())
-        continue
+    t = time.clock()
+    # screenshot.check_screenshot()
 
-    # t = time.clock()
+    #end_time = time.clock()
+    #print(end_time - t)
+
+    img = Image.open("./screenshot.png")
+
+    # 文字识别,可选 Tesseract 和 Baidu ,请在 config/configure.conf 中进行相应配置
+
+    #ocr_img: 需要分别截取题目和选项区域，使用 Tesseract
+    #ocr_img_tess： 题目和选项一起截，使用 Tesseract
+    #ocr_img_baidu： 题目和选项一起截，使用 baidu ocr，需配置 key
+    
+    # question, choices = ocr.ocr_img(img, config)
+    # question, choices = ocr.ocr_img_tess(img, config)
+    question, choices = ocr.ocr_img_baidu(img, config)
+
+    #end_time2 = time.clock()
+    #print(end_time2 - end_time)
+
     # 用不同方法输出结果，取消某个方法在前面加上#
 
     # # 打开浏览器方法搜索问题
@@ -44,13 +49,6 @@ while True:
     # methods.run_algorithm(2, question, choices)
 
     # 多线程
-    # if question and choices:
-    #     m1 = Thread(target=methods.run_algorithm, args=(0, question, choices))
-    #     m2 = Thread(target=methods.run_algorithm, args=(1, question, choices))
-    #     m3 = Thread(target=methods.run_algorithm, args=(2, question, choices))
-    #     m1.start()
-    #     m2.start()
-    #     m3.start()
     if question and choices:
         m1 = Thread(methods.run_algorithm(0, question, choices))
         m2 = Thread(methods.run_algorithm(1, question, choices))
@@ -59,8 +57,8 @@ while True:
         m2.start()
         m3.start()
 
-    end_time = time.clock()
-    print('用时: {0}'.format(end_time - t))
+    end_time3 = time.clock()
+    print('用时: {0}'.format(end_time3 - t))
 
     go = input('输入回车继续运行,输入 n 回车结束运行: ')
     if go == 'n':
