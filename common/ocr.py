@@ -173,26 +173,23 @@ def ocr_img_baidu(image, config):
     combine_region = config.get("region", "combine_region").replace(' ','').split(',')
     combine_region = list(map(int, combine_region))
     region_im = image.crop((combine_region[0], combine_region[1], combine_region[2], combine_region[3]))
-    # region_im.show()
     # 转化为灰度图
     #region_im = region_im.convert('L')
 
     # 把图片变成二值图像
-    #region_im = binarizing(region_im, 190)
-    #region_im.show()
+    # region_im = binarizing(region_im, 190)
+    # region_im.show()
     img_byte_arr = io.BytesIO()
     region_im.save(img_byte_arr, format='PNG')
     image_data = img_byte_arr.getvalue()
     # base64_data = base64.b64encode(image_data)
     response = client.basicGeneral(image_data)
-    #print(response)
     words_result = response['words_result']
-
+    
     texts = [x['words'] for x in words_result]
-    # print(texts)
     if len(texts) > 2:
-        question = texts[0]
-        choices = texts[1:]
+        question = ''.join(texts[0:-3])
+        choices = texts[-3:]
         choices = [x.replace(' ', '') for x in choices]
     else:
         print(Fore.RED + '截图区域设置错误，请重新设置' + Fore.RESET)
@@ -200,14 +197,14 @@ def ocr_img_baidu(image, config):
     #     exit(0)
 
     # 处理出现问题为两行或三行
-    if choices[0].endswith('?'):
-        question += choices[0]
-        choices.pop(0)
-    elif choices[1].endswith('?'):
-        question += choices[0]
-        question += choices[1]
-        choices.pop(0)
-        choices.pop(0)
+    # if choices[0].endswith('?'):
+    #     question += choices[0]
+    #     choices.pop(0)
+    # elif choices[1].endswith('?'):
+    #     question += choices[0]
+    #     question += choices[1]
+    #     choices.pop(0)
+    #     choices.pop(0)
 
     return question, choices
 
