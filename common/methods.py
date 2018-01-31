@@ -7,6 +7,7 @@
 import requests
 import webbrowser
 import urllib.parse
+from pyquery import PyQuery as pq
 
 # # 颜色兼容Win 10
 from colorama import init,Fore
@@ -39,7 +40,8 @@ def count_base(question,choices):
     # 请求
     req = requests.get(url='http://www.baidu.com/s', params={'wd':question})
     content = req.text
-    #print(content)
+    doc = pq(content)
+    content = doc.find('#content_left').html()
     counts = []
     print('Question: '+question)
     if '不是' in question:
