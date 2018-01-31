@@ -87,10 +87,11 @@ def hit_me():
         return hit_me()
     #     if running:
     #         return hit_me()
-
+    
+    touch_start = selection_start
     containSum = 0
     for q in question:
-        if (q.index(current_question)>-1):
+        if (q in current_question):
             containSum = containSum + 1
 
     if (containSum*100/len(question)>80):
@@ -108,7 +109,7 @@ def hit_me():
             print('正确答案为：'+answers[current_answer])
         # req = requests.get(url='http://localhost:3000/add', params={'question': current_question, 'answer': answers[current_answer], 'bigdata':answers[current_bigData]})
         # print(req)
-        req   = requests.get(url='http://hj.chenzhicheng.com/', params={'right': current_answer, 'token':token})
+        req = requests.get(url='http://hj.chenzhicheng.com/', params={'right': current_answer, 'token':token})
         print(req.text)
         return hit_me()
 
@@ -116,13 +117,12 @@ def hit_me():
     #         return hit_me()
     count = 0
     status = 'answered'
-    req   = requests.get(url='http://hj.chenzhicheng.com/', params={'question': question, 'answer': choices, 'token':token})
+    req = requests.get(url='http://hj.chenzhicheng.com/', params={'question': question, 'answer': choices, 'token':token})
     print(req.text)
 
     current_question = question
     answers = choices
 
-    touch_start = selection_start
     save_choices = choices
 
     result = '问题：'+question+'\n\n';
