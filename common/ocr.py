@@ -181,7 +181,7 @@ def ocr_img(image, platform):
                 question_end = max(i, question_end)
                 break;
 
-        if((question_end - question_start)<10):
+        if((question_end - question_start)<100):
             return '', [], 0
 
         question_im = image.crop((50, question_start, 1000, question_end)) 
@@ -263,8 +263,8 @@ def ocr_img(image, platform):
         question_end = -1
 
     # question = image.crop((75, 315, 1167, 789)) # iPhone 7P
-    question_im.save('question.jpg');
-    choices_im.save('choices.jpg');
+    # question_im.save('question.jpg');
+    # choices_im.save('choices.jpg');
     # 边缘增强滤波,不一定适用
     #question_im = question_im.filter(ImageFilter.EDGE_ENHANCE)
     #choices_im = choices_im.filter(ImageFilter.EDGE_ENHANCE)
@@ -298,26 +298,9 @@ def ocr_img(image, platform):
 
     choice = pytesseract.image_to_string(choices_im, lang='chi_sim', config=tessdata_dir_config)
     # 处理将"一"识别为"_"的问题
-    choices = choice.strip().replace("_", "一").split("\n")
+    choices = choice.strip().replace("_", "一").replace(" ", "").split("\n")
 
-    choices = [ x for x in choices if x != '' ]
-    # 兼容问题为多行
-    question_length = 0
-    for i in range(len(choices)):
-        if (choices[i].endswith('?')):
-            j=0
-            while (j<i):
-                question += choices[j]
-                j=j+1
-            j=i
-            while (j>-1):
-                choices.pop(j)
-                j=j-1
-            question_length = i;
-            break
-    i=0
-    while (len(choices)>3):
-        choices.pop()      
+    choices = [ x for x in choices if x != '' ]     
 
     return question, choices, question_end
 

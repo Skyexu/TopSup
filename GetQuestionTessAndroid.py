@@ -88,7 +88,12 @@ def hit_me():
     #     if running:
     #         return hit_me()
 
-    if (question == current_question or (question in current_question)):
+    containSum = 0
+    for q in question:
+        if (q.index(current_question)>-1):
+            containSum = containSum + 1
+
+    if (containSum*100/len(question)>80):
         if (status != 'waiting'):
             print('此题已答过')
             print('休息5s')
@@ -99,8 +104,8 @@ def hit_me():
         if (touch_start==-1):
             return hit_me()
         current_answer = ocr.get_question(img, touch_start, platform)
-        if (current_answer < len(answers))
-        print('正确答案为：'+answers[current_answer])
+        if (current_answer < len(answers)):
+            print('正确答案为：'+answers[current_answer])
         # req = requests.get(url='http://localhost:3000/add', params={'question': current_question, 'answer': answers[current_answer], 'bigdata':answers[current_bigData]})
         # print(req)
         req   = requests.get(url='http://hj.chenzhicheng.com/', params={'right': current_answer, 'token':token})
@@ -222,7 +227,7 @@ def hit_me():
 
     selection = count_base(question, choices)
 
-    if (len(choices) <3 || selection>2):
+    if (len(choices) <3 or selection>2):
         return hit_me();
     print('\n我要选'+choices[selection])
     if (platform=='zs'):
