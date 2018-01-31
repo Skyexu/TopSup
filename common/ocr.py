@@ -300,7 +300,10 @@ def ocr_img(image, platform):
     # 处理将"一"识别为"_"的问题
     choices = choice.strip().replace("_", "一").replace(" ", "").split("\n")
 
-    choices = [ x for x in choices if x != '' ]     
+    choices = [ x for x in choices if x != '' ]   
+
+    if (len(choices)):
+        choices = choices[:3]  
 
     return question, choices, question_end
 
