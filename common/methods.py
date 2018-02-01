@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 # @Author  : Skye
 # @Time    : 2018/1/9 10:39
@@ -10,7 +10,7 @@ import urllib.parse
 from pyquery import PyQuery as pq
 
 # # 颜色兼容Win 10
-from colorama import init,Fore
+from colorama import init,Fore,Back
 init()
 
 def open_webbrowser(question):
@@ -38,18 +38,30 @@ def open_webbrowser_count(question,choices):
 def count_base(question,choices):
     print('\n-- 方法3： 题目搜索结果包含选项词频计数法 --\n')
     # 请求
+    question = '寒食节是为了纪念谁'
+    choices = ['屈原','介之推','鲁迅']
     req = requests.get(url='http://www.baidu.com/s', params={'wd':question})
     content = req.text
     doc = pq(content)
     content = doc.find('#content_left').html()
+    baike_content = doc.find('.op_exactqa_main').html()
     counts = []
+    baike_recommend = ''
     print('Question: '+question)
     if '不是' in question:
         print('**请注意此题为否定题,选计数最少的**')
     for i in range(len(choices)):
         counts.append(content.count(choices[i]))
+        if baike_content and baike_content.count(choices[i]):
+            baike_recommend = choices[i]
         #print(choices[i] + " : " + str(counts[i]))
     output(choices, counts)
+
+    if baike_recommend:
+        print()
+        print(Fore.YELLOW + '{0}：{1}'.format('百科推荐', baike_recommend) + Fore.RESET)
+        print()
+
 
 def output(choices, counts):
     counts = list(map(int, counts))
@@ -64,22 +76,24 @@ def output(choices, counts):
     if index_max == index_min:
         print(Fore.RED + "高低计数相等此方法失效！" + Fore.RESET)
         return
-
+    print(Back.WHITE)
     for i in range(len(choices)):
         print()
         if i == index_max:
             # 绿色为计数最高的答案
-            print(Fore.GREEN + "{0} : {1} ".format(choices[i], counts[i]) + Fore.RESET)
+            print(Fore.GREEN + "选项 {0} ---- {1} : {2} ".format(str(i + 1), choices[i], counts[i]) + Fore.RESET)
         elif i == index_min:
             # 红色为计数最低的答案
-            print(Fore.MAGENTA + "{0} : {1}".format(choices[i], counts[i]) + Fore.RESET)
+            print(Fore.MAGENTA + "选项 {0} ---- {1} : {2}".format(str(i + 1), choices[i], counts[i]) + Fore.RESET)
         else:
-            print("{0} : {1}".format(choices[i], counts[i]))
-
+            print(Fore.BLACK + "选项 {0} ---- {1} : {2}".format(str(i + 1), choices[i], counts[i]) + Fore.RESET)
+    
+    print(Back.RESET)
 
 def run_algorithm(al_num, question, choices):
     if al_num == 0:
-        open_webbrowser(question)
+        # open_webbrowser(question)
+	    pass
     elif al_num == 1:
         open_webbrowser_count(question, choices)
     elif al_num == 2:
