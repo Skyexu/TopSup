@@ -66,24 +66,32 @@ def hit_me():
         go = input('输入回车运行,输入 n 回车结束运行: ')
         if go == 'n':
             return
+
+    t = time.clock()
     # 截图
     screenshot.check_screenshot()
 
     img = Image.open("./screenshot.png")
+    print('截图耗时: {0}'.format(time.clock() - t))
+    t = time.clock()
 
     # 文字识别
     question, choices, selection_start = ocr.ocr_img(img, platform)
 
-    if (count > 100):
+    print('文字识别耗时: {0}'.format(time.clock() - t))
+
+    if (count > 6000):
         print('退出')
+        os.system('adb shell input keyevent 4 && adb shell input keyevent 4')
         return
 
     if (question=='' or len(choices)==0 or selection_start==0):
         status = 'waiting'
         print('未检测到题板')
         count = count + 1
-        print('休息1s')
-        time.sleep(1)
+        # print('休息1s')
+        # time.sleep(1)
+        os.system('adb shell input tap 920 400');
         return hit_me()
     #     if running:
     #         return hit_me()
@@ -115,10 +123,12 @@ def hit_me():
 
     #     if running:
     #         return hit_me()
+    t = time.clock()
     count = 0
     status = 'answered'
     req = requests.get(url='http://hj.chenzhicheng.com/', params={'question': question, 'answer': choices, 'token':token})
     print(req.text)
+    print('发送问题耗时: {0}'.format(time.clock() - t))
 
     current_question = question
     answers = choices
@@ -225,7 +235,9 @@ def hit_me():
                 # q.put(' '+str(choices[i]) + ':' + str(counts[i]) + '\n')
         return result
 
+    t = time.clock()
     selection = count_base(question, choices)
+    print('寻找答案耗时: {0}'.format(time.clock() - t))
 
     if (len(choices) <3 or selection>2):
         return hit_me();
@@ -248,8 +260,10 @@ def hit_me():
     time.sleep(5)
     return hit_me()
 
-
-go = input('请选择平台：\n1. 芝士超人\n2. 花椒直播 \n3. 冲顶大会 \n4. 普遍适应\n')
+if (len(sys.argv)>1):
+    go = sys.argv[1]
+else:
+    go = input('请选择平台：\n1. 芝士超人\n2. 花椒直播 \n3. 冲顶大会 \n4. 普遍适应\n')
 if go=='1':
     platform = 'zs'
 elif go=='2':
