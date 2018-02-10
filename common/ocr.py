@@ -7,6 +7,7 @@
 from PIL import Image
 import pytesseract
 from PIL import ImageFilter
+import datetime
 
 # 二值化算法
 def binarizing(img,threshold):
@@ -55,6 +56,8 @@ def get_question(image, question_end, platform):
         h = temp
 
     im_pixel = image.load()
+
+    image.save(datetime.datetime.now().strftime("%Y%m%d%H%M%S")+os+'.png');
 
     if (os=='zs'):
         # 芝士超人

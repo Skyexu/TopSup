@@ -91,7 +91,7 @@ def hit_me():
         count = count + 1
         # print('休息1s')
         # time.sleep(1)
-        os.system('adb shell input tap 920 400');
+        os.system('adb shell input tap 930 300');
         return hit_me()
     #     if running:
     #         return hit_me()
