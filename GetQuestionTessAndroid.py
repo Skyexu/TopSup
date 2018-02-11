@@ -117,7 +117,7 @@ def hit_me():
             print('正确答案为：'+answers[current_answer])
         # req = requests.get(url='http://localhost:3000/add', params={'question': current_question, 'answer': answers[current_answer], 'bigdata':answers[current_bigData]})
         # print(req)
-        req = requests.get(url='http://hj.chenzhicheng.com/', params={'right': current_answer, 'token':token})
+        req = requests.get(url='http://hj.chenzhicheng.com/update', params={'question': current_question, 'right': current_answer, 'token':token})
         print(req.text)
         return hit_me()
 
@@ -126,7 +126,7 @@ def hit_me():
     t = time.clock()
     count = 0
     status = 'answered'
-    req = requests.get(url='http://hj.chenzhicheng.com/', params={'question': question, 'answer': choices, 'token':token})
+    req = requests.get(url='http://hj.chenzhicheng.com/add', params={'question': question, 'answer': choices, 'token':token})
     print(req.text)
     print('发送问题耗时: {0}'.format(time.clock() - t))
 
@@ -254,7 +254,7 @@ def hit_me():
         os.system('adb shell input tap 250 ' + str(touch_start+(selection+0.5)*answer_height))
     # if running:
     #     hit_me()
-    req   = requests.get(url='http://hj.chenzhicheng.com/', params={'advise': selection, 'token':token})
+    req   = requests.get(url='http://hj.chenzhicheng.com/update', params={'question': current_question, 'advise': selection, 'token':token})
     print(req.text)
     print('休息5s')
     time.sleep(5)
