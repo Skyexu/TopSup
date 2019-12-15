@@ -43,7 +43,6 @@ def pull_screenshot():
             'adb' + device_cmd + ' shell screencap -p',
             shell=True, stdout=subprocess.PIPE)
         binary_screenshot = process.stdout.read()
-        binary_screenshot = binary_screenshot.replace(b'\r\r\n', b'\n')
         if SCREENSHOT_WAY == 2:
             binary_screenshot = binary_screenshot.replace(b'\r\n', b'\n')
             # binary_screenshot = binary_screenshot.split(b' ')
@@ -51,18 +50,13 @@ def pull_screenshot():
             # print(binary_screenshot)
         elif SCREENSHOT_WAY == 1:
             binary_screenshot = binary_screenshot.replace(b'\r\r\n', b'\n')
-        return binary_screenshot
-        # f = open('screenshot.png', 'wb')
-        # f.write(binary_screenshot)
-        # f.close()
+        f = open('screenshot.png', 'wb')
+        f.write(binary_screenshot)
+        f.close()
     elif SCREENSHOT_WAY == 0:
-        os.system('adb' + device_cmd + ' shell screencap -p /sdcard/screenshot.png')
+        os.system('adb' + device_cmd +
+                  ' shell screencap -p /sdcard/screenshot.png')
         os.system('adb' + device_cmd + ' pull /sdcard/screenshot.png .')
-        file = open('./screenshot.png', 'b')
-        try:
-            return file.read()
-        finally:
-            file.close()
 
 
 def check_screenshot():
@@ -78,14 +72,13 @@ def check_screenshot():
     if SCREENSHOT_WAY < 0:
         print('暂不支持当前设备')
         sys.exit()
-    screenshot = pull_screenshot()
-    if screenshot is not None:
+    pull_screenshot()
+    try:
+        Image.open('./screenshot.png').load()
         print('采用方式 {} 获取截图'.format(SCREENSHOT_WAY))
-        return screenshot
-    else:
+    except Exception:
         SCREENSHOT_WAY -= 1
         check_screenshot()
-
 
 if __name__ == '__main__':
     check_screenshot()
