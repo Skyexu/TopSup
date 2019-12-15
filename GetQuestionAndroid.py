@@ -10,6 +10,7 @@ from common import screenshot, ocr, methods
 from threading import Thread
 import time
 import configparser
+import os
 
 # 读取配置文件
 config = configparser.ConfigParser()
@@ -62,5 +63,5 @@ while True:
     go = input('输入回车继续运行,输入 n 回车结束运行: ')
     if go == 'n':
         break
-
+    os.system('cls')
     print('------------------------')
